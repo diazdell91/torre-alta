@@ -1,9 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import TaskItem from "./components/TaskItem";
 import TaskInfo from "./components/TaskInfo";
 import TopTabs from "../../components/TopTabs";
-import TaskPanel from "./components/TaskPanel";
 import useAxios from "../../hooks/useAxios";
 import {
   GET_TASK_GENERAL,
@@ -66,10 +64,6 @@ const TasksLayout = (props: Props) => {
       });
     }
   };
-
-  // console.log("dataToday", dataToday);
-  // console.log("dataGeneral", dataGeneral);
-  // console.log("dataPendings", dataPendings);
 
   return (
     <View style={styles.container}>

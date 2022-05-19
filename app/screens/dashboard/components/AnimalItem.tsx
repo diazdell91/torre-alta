@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
+import TableCell from "./TableCell";
 
 type AnimalProps = {
   ID: number;
@@ -21,7 +21,6 @@ const AnimalItem = ({ animal }: Props) => {
   const { index, numero, nombre, guarismo, sexo, codigo } = animal;
   const { navigate } = useNavigation<any>();
   const backgroundColor = index % 2 === 0 ? COLORS.white2 : COLORS.white;
-  const color = index % 3 === 0 ? COLORS["gray-medium"] : COLORS.primary;
 
   const handleNavigate = () => {
     navigate("CattleLayout", {
@@ -35,31 +34,11 @@ const AnimalItem = ({ animal }: Props) => {
       onPress={handleNavigate}
       style={{ ...styles.container, backgroundColor }}
     >
-      <View style={{ flex: 0.5 }}>
-        <Text body color={color}>
-          {numero}
-        </Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Text body color={color}>
-          {nombre}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text body color={color}>
-          {guarismo}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text body color={color}>
-          {sexo}
-        </Text>
-      </View>
-      <View style={{ flex: 0.5 }}>
-        <Text body color={color}>
-          {codigo.toUpperCase()}
-        </Text>
-      </View>
+      <TableCell cellWidth="10%" tittle={numero} primary />
+      <TableCell cellWidth="35%" tittle={nombre} primary />
+      <TableCell cellWidth="20%" tittle={guarismo.toString()} primary />
+      <TableCell cellWidth="20%" tittle={sexo} primary />
+      <TableCell cellWidth="15%" tittle={codigo.toUpperCase()} primary />
     </Pressable>
   );
 };
@@ -69,12 +48,8 @@ export default AnimalItem;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    padding: SIZES.m,
+    paddingVertical: SIZES.m,
+    paddingHorizontal: SIZES.xs,
     backgroundColor: COLORS.white,
-  },
-  row: {
-    flex: 1,
-    justifyContent: "center",
   },
 });

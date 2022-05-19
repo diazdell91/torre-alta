@@ -3,30 +3,18 @@ import { StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../theme/Theme";
 import { Text } from "../../../components";
+import TableCell from "./TableCell";
 
 type Props = {};
 
 const TableHeader = (props: Props) => {
   return (
     <View style={styles.container}>
-      <Text body color={COLORS.white}>
-        N°
-      </Text>
-      <View style={{ flexDirection: "row" }}>
-        <Text body color={COLORS.white}>
-          Nombre
-        </Text>
-        <Icon name="chevron-down" color={COLORS.white} size={16} />
-      </View>
-      <Text body color={COLORS.white}>
-        Guariso
-      </Text>
-      <Text body color={COLORS.white}>
-        Sexo
-      </Text>
-      <Text body color={COLORS.white}>
-        Código
-      </Text>
+      <TableCell cellWidth="10%" tittle="N°" />
+      <TableCell cellWidth="35%" tittle="Nombre" />
+      <TableCell cellWidth="20%" tittle="Guarismo" />
+      <TableCell cellWidth="20%" tittle="Sexo" />
+      <TableCell cellWidth="15%" tittle="Código" />
     </View>
   );
 };
@@ -37,7 +25,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     backgroundColor: COLORS.primary,
-    justifyContent: "space-between",
-    padding: SIZES.l,
+    paddingVertical: SIZES.l,
+    paddingHorizontal: SIZES.xs,
+  },
+  cell: {
+    alignItems: "flex-start",
   },
 });

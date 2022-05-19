@@ -16,7 +16,7 @@ import CattleVideo from "./CattleVideo";
 
 type Props = any;
 
-const tabs = ["General", "Hijos", "Árbol", "Video"];
+const tabs = ["General", "Hijos", "Video"];
 
 const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
@@ -25,7 +25,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
 
   const [getCattleById, dataGeneral, loadingGeneral, errorGeneral] = useAxios();
   const [getCattleChild, dataChild, loadingChild, errorChild] = useAxios();
-  const [getCattleTree, dataTree, loadingTree, errorTree] = useAxios();
+  //const [getCattleTree, dataTree, loadingTree, errorTree] = useAxios();
   const [getVideoUrl, dataVideo, loadingVideo, errorVideo] = useAxios();
 
   useEffect(() => {
@@ -34,17 +34,32 @@ const CattleLayout = ({ navigation, route }: Props) => {
       method: "GET",
       url: `${GET_CATTLE_BY_ID}${id}`,
     });
-    getCattleChild({
-      axiosInstance: cattleServices,
-      method: "GET",
-      url: `${GET_CATTLE_CHILD_BY_ID}${id}`,
-    });
-    getVideoUrl({
-      axiosInstance: cattleServices,
-      method: "GET",
-      url: `video/filter?ID=${id}`,
-    });
   }, [id]);
+
+  const handleTabChange = (tab: string) => {
+    setSelectedTab(tab);
+    if (tab === "General") {
+      getCattleById({
+        axiosInstance: cattleServices,
+        method: "GET",
+        url: `${GET_CATTLE_BY_ID}${id}`,
+      });
+    }
+    if (tab === "Hijos") {
+      getCattleChild({
+        axiosInstance: cattleServices,
+        method: "GET",
+        url: `${GET_CATTLE_CHILD_BY_ID}${id}`,
+      });
+    }
+    if (tab === "Video") {
+      getVideoUrl({
+        axiosInstance: cattleServices,
+        method: "GET",
+        url: `video/filter?ID=${id}`,
+      });
+    }
+  };
 
   return (
     <ScrollView
@@ -56,7 +71,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
       <TopTabs
         tabs={tabs}
         tabSelected={selectedTab}
-        handleSelectTab={setSelectedTab}
+        handleSelectTab={handleTabChange}
       />
       {selectedTab === "General" && (
         <CattleGeneral
