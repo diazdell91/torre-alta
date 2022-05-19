@@ -1,32 +1,19 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-//import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../theme/Theme";
-import { Text } from "../../../components";
+import TableCell from "../../dashboard/components/TableCell";
 
 type Props = {};
 
 const CattleChildHeader = (props: Props) => {
   return (
     <View style={styles.container}>
-      <Text body color={COLORS.white}>
-        N°
-      </Text>
-      <Text body color={COLORS.white}>
-        Nombre
-      </Text>
-      <Text body color={COLORS.white}>
-        Madre
-      </Text>
-      <Text body color={COLORS.white}>
-        Guarismo
-      </Text>
-      <Text body color={COLORS.white}>
-        Sexo
-      </Text>
-      <Text body color={COLORS.white}>
-        Nota
-      </Text>
+      <TableCell tittle="N°" cellWidth="10%" />
+      <TableCell tittle="Nombre" cellWidth="20%" />
+      <TableCell tittle="Madre" cellWidth="20%" />
+      <TableCell tittle="Guarismo" cellWidth="20%" />
+      <TableCell tittle="Sexo" cellWidth="20%" />
+      <TableCell tittle="Nota" cellWidth="10%" />
     </View>
   );
 };
@@ -37,7 +24,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     backgroundColor: COLORS.primary,
-    justifyContent: "space-between",
-    padding: SIZES.l,
+    paddingVertical: SIZES.l,
+    paddingHorizontal: SIZES.xs,
   },
 });

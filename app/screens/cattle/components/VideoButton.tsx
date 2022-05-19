@@ -3,11 +3,14 @@ import { Pressable, StyleSheet } from "react-native";
 import { Icon, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
-type Props = {};
+type Props = {
+  onPress: () => void;
+};
 
 const VideoButton = (props: Props) => {
+  const { ...rest } = props;
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} {...rest}>
       <Text>Añadir video</Text>
       <Icon name="plus" />
     </Pressable>

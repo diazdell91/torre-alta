@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
+import TableCell from "../../dashboard/components/TableCell";
 
 type AnimalProps = {
   ID: number;
@@ -19,18 +19,9 @@ type Props = {
 };
 
 const CattleChildItem = ({ animal }: Props) => {
-  const {
-    index,
-    numero,
-    nombre,
-    madre,
-    guarismo,
-    sexo,
-    nota_campo = "6,6",
-  } = animal;
+  const { index, numero, nombre, madre, guarismo, sexo, nota_campo } = animal;
   const { navigate } = useNavigation<any>();
   const backgroundColor = index % 2 === 0 ? COLORS.white2 : COLORS.white;
-  const color = index % 3 === 0 ? COLORS["gray-medium"] : COLORS.primary;
 
   const handleNavigate = () => {
     navigate("CattleLayout", {
@@ -44,36 +35,16 @@ const CattleChildItem = ({ animal }: Props) => {
       onPress={handleNavigate}
       style={{ ...styles.container, backgroundColor }}
     >
-      <View style={{ flex: 0.5 }}>
-        <Text body color={color}>
-          {numero}
-        </Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Text body color={color}>
-          {nombre}
-        </Text>
-      </View>
-      <View style={{ flex: 2 }}>
-        <Text body color={color}>
-          {madre}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text body color={color}>
-          {guarismo}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text body color={color}>
-          {sexo}
-        </Text>
-      </View>
-      <View style={styles.row}>
-        <Text body color={color}>
-          {nota_campo}
-        </Text>
-      </View>
+      <TableCell tittle={numero} cellWidth="10%" primary />
+      <TableCell tittle={nombre} cellWidth="20%" primary />
+      <TableCell tittle={madre} cellWidth="20%" primary />
+      <TableCell tittle={guarismo.toString()} cellWidth="20%" primary />
+      <TableCell tittle={sexo} cellWidth="20%" primary />
+      <TableCell
+        tittle={nota_campo ? nota_campo : "0"}
+        cellWidth="10%"
+        primary
+      />
     </Pressable>
   );
 };

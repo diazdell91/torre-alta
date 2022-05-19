@@ -90,6 +90,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
       {selectedTab === "Árbol" && <CattleTree />}
       {selectedTab === "Video" && (
         <CattleVideo
+          id={id}
           data={dataVideo}
           loading={loadingVideo}
           error={errorVideo}

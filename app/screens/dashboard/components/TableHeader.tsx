@@ -1,8 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../../../theme/Theme";
-import { Text } from "../../../components";
 import TableCell from "./TableCell";
 
 type Props = {};
@@ -27,8 +25,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     paddingVertical: SIZES.l,
     paddingHorizontal: SIZES.xs,
-  },
-  cell: {
-    alignItems: "flex-start",
   },
 });

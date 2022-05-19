@@ -3,9 +3,12 @@ import { StyleSheet, View } from "react-native";
 import { Icon, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
-type Props = {};
+type Props = {
+  mediaMale: string;
+  mediaFemale: string;
+};
 
-const TagChild = (props: Props) => {
+const TagChild = ({ mediaFemale = "6,6", mediaMale = "6,6" }: Props) => {
   return (
     <View style={styles.container}>
       <View
@@ -17,15 +20,15 @@ const TagChild = (props: Props) => {
         <Icon name="male" />
         <View style={styles.inf}>
           <Text>Machos</Text>
-          <Text caption>Media</Text>
+          <Text caption>{`Media ${mediaMale}`}</Text>
         </View>
       </View>
       {/*  */}
       <View style={styles.section}>
-        <Icon name="male" />
+        <Icon name="female" />
         <View style={styles.inf}>
-          <Text>Machos</Text>
-          <Text caption>Media</Text>
+          <Text>Hembras</Text>
+          <Text caption>{`Media ${mediaFemale}`}</Text>
         </View>
       </View>
     </View>

@@ -1,12 +1,13 @@
 import React from "react";
 import { ActivityIndicatorProps, StyleSheet, View } from "react-native";
 import { Loading } from "../../components";
+import { COLORS } from "../../theme/Theme";
 
 type Props = {
   color?: ActivityIndicatorProps["color"];
 };
 
-const LoadingScreen = ({ color }: Props) => {
+const LoadingScreen = ({ color = COLORS.primary }: Props) => {
   return (
     <View style={styles.container}>
       <Loading color={color} />
