@@ -6,34 +6,87 @@ import {
   ViewStyle,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { COLORS, SIZES } from "../theme/Theme";
 import Icon from "./Icon";
 import { IconType } from "../constants/Icons";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
+import Text from "./Text";
 
 type InputProps = {
   style?: StyleProp<ViewStyle>;
   iconRight?: IconType;
   onRightPress?: () => void;
+  calendar?: boolean;
+  placeholder?: string;
+  onChangeDate: (item: { label: string; value: string }) => void;
+  value?: string;
 };
 type Props = InputProps & DefaultInput["props"];
 
 const Input = (props: Props) => {
-  const { style, iconRight, onRightPress, ...rest } = props;
+  const {
+    style,
+    iconRight,
+    onRightPress,
+    calendar,
+    placeholder = "Selecciona ...",
+    value = "",
+    onChangeDate,
+  } = props;
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
   return (
-    <View style={styles.container}>
-      <DefaultInput
-        style={[styles.inputContainer, style]}
-        placeholderTextColor={COLORS["gray-dark"]}
-        editable={false}
-        {...rest}
-      />
+    <Pressable onPress={showDatePicker} style={styles.container}>
+      <View style={[styles.inputContainer, style]}>
+        <Text
+          style={{ ...styles.textValue }}
+          color={
+            value?.length > 0 ? COLORS["gray-medium"] : COLORS["gray-dark"]
+          }
+        >
+          {value.length > 0 ? value : placeholder}
+        </Text>
+      </View>
       {iconRight && (
         <Pressable onPress={onRightPress} style={styles.iconLeft}>
           <Icon name={iconRight} />
         </Pressable>
       )}
-    </View>
+
+      {calendar && (
+        <View style={styles.iconLeft}>
+          <Icon name="calendar" />
+        </View>
+      )}
+
+      {calendar && (
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          display="inline"
+          onConfirm={(date) => {
+            const dateFormatted = moment(date).format("DD-MM-YYYY");
+            const dateCalendar = moment(dateFormatted, "YYYY-MM-DD").calendar();
+            onChangeDate({ label: dateCalendar, value: dateFormatted });
+            hideDatePicker();
+          }}
+          onCancel={hideDatePicker}
+          locale="es_ES"
+          cancelTextIOS="Cancelar"
+          confirmTextIOS="Confirmar"
+        />
+      )}
+    </Pressable>
   );
 };
 
@@ -53,13 +106,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white2,
     borderRadius: SIZES.inputRadius,
     paddingLeft: SIZES.m,
-    fontFamily: "Montserrat-SemiBold",
-    fontSize: 16,
-    color: COLORS["gray-medium"],
+    justifyContent: "center",
   },
   iconLeft: {
     position: "absolute",
     right: SIZES.s,
     backgroundColor: COLORS.white2,
+  },
+  textValue: {
+    fontFamily: "Montserrat-SemiBold",
+    fontSize: 16,
   },
 });

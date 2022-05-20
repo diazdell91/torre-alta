@@ -19,6 +19,7 @@ const tabs = ["General", "Hijos", "Video"];
 
 const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
+
   const [selectedTab, setSelectedTab] = useState("General");
   const [cattle, setCattle] = useState({});
   const [cattleChild, setCattleChild] = useState([]);
@@ -57,7 +58,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id]);
+  }, [id, route]);
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);

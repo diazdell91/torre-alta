@@ -15,11 +15,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.expo.torre-alta"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,8 +27,6 @@
       }
     },
     "description": "",
-    "plugins": [
-      "expo-image-picker"
-    ]
+    "plugins": ["expo-image-picker"]
   }
 }

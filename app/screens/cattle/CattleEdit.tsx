@@ -21,7 +21,6 @@ import { defaultValues } from "./deaultValues";
 import { cleanEmptyObj } from "../../helper/cleanEmptyObj";
 import CollapseCardEdit from "./components/CollapseCardEdit";
 import objToArray from "../../helper/objToArray";
-
 import InputDropDown from "../../components/InputDropDown";
 
 interface SelectsParams {
@@ -37,7 +36,7 @@ interface SelectsParams {
 
 const CattleEdit = ({ navigation, route }: any) => {
   const { bottom } = useSafeAreaInsets();
-  const { id } = route.params;
+  const { id, name } = route.params;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -77,7 +76,10 @@ const CattleEdit = ({ navigation, route }: any) => {
     if (resp.data) {
       console.log(resp.data);
       setIsLoading(false);
-      navigation.goBack();
+      navigation.navigate("CattleLayout", {
+        id,
+        name,
+      });
     }
     if (resp.error) {
       console.log(resp.error);
@@ -161,8 +163,7 @@ const CattleEdit = ({ navigation, route }: any) => {
             style={styles.inputN}
           />
         </View>
-        <InputSelect placeholder="Guarismo" iconRight={"flechaAbajo"} />
-
+        {/* <InputSelect placeholder="Guarismo" iconRight={"flechaAbajo"} /> */}
         <Input
           placeholder="N°"
           onChangeText={(text) => handleChange("numero", text)}
@@ -176,7 +177,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             setValues({ ...values, sexo: item.value });
           }}
         />
-
         <InputDropDown
           data={selects.hair}
           placeholder="Pelo"
@@ -185,7 +185,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             setValues({ ...values, pelo: item.value });
           }}
         />
-
         <Input
           placeholder="Madre o número..."
           onChangeText={(text) => handleChange("madre", text)}
@@ -194,7 +193,15 @@ const CattleEdit = ({ navigation, route }: any) => {
           placeholder="Padre o número..."
           onChangeText={(text) => handleChange("padre", text)}
         />
-        <Input placeholder="Fecha de lidea" iconRight={"calendar"} />
+        <InputSelect
+          placeholder="Fecha de lidea"
+          value={values.fecha_lidia}
+          onChangeDate={(item) => {
+            console.log(item);
+            setValues({ ...values, fecha_lidia: item.value });
+          }}
+          calendar
+        />
         <View style={styles.inputRowIcon}>
           <InputDropDown
             data={selects.bullf}
@@ -206,7 +213,6 @@ const CattleEdit = ({ navigation, route }: any) => {
           />
           <IconAdd style={{ marginEnd: SIZES.m }} />
         </View>
-
         <View style={styles.inputRowIcon}>
           <InputDropDown
             data={selects.place}
@@ -218,32 +224,39 @@ const CattleEdit = ({ navigation, route }: any) => {
           />
           <IconAdd style={{ marginEnd: SIZES.m }} />
         </View>
-
         <View style={styles.inputNcontainer}>
-          <Input
-            flex
+          <InputSelect
             placeholder="F.Alta"
             iconRight={"calendar"}
             style={styles.inputN}
+            value={values.fecha_alta}
+            onChangeDate={(item) => {
+              console.log(item);
+              setValues({ ...values, fecha_alta: item.value });
+            }}
+            calendar
           />
-          <Input
-            flex
+
+          <InputSelect
             placeholder="F.Baja"
             iconRight={"calendar"}
             style={styles.inputN}
+            value={values.fecha_baja}
+            onChangeDate={(item) => {
+              console.log(item);
+              setValues({ ...values, fecha_baja: item.value });
+            }}
+            calendar
           />
         </View>
-
         <Input
           placeholder="Destino"
           onChangeText={(text) => handleChange("destino", text)}
         />
-
         <Input
           placeholder="Crotal"
           onChangeText={(text) => handleChange("crotal", text)}
         />
-
         <CollapseCardEdit title="Caballo">
           <Input
             placeholder="Descricción..."
@@ -292,7 +305,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             />
           </View>
         </CollapseCardEdit>
-
         <CollapseCardEdit title="Muleta">
           <Input
             placeholder="Descricción..."
@@ -459,7 +471,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             />
           </View>
         </CollapseCardEdit>
-
         <Input
           placeholder="Observaciones de campo..."
           onChangeText={(text) =>
