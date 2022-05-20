@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   cattleServices,
   SELECT_CATTLE,
   SELECT_DEST,
   SELECT_HAIR,
-  SELECT_PLACE,
   SELECT_PLAZA,
   SELECT_SEX,
   SELECT_STATE,
@@ -18,7 +17,7 @@ import objToArray from "../../helper/objToArray";
 import { COLORS, SIZES } from "../../theme/Theme";
 import LoadingScreen from "../loading/LoadingScreen";
 
-type Props = {};
+type Props = any;
 
 const defaultValues = {
   numero: "",
@@ -35,7 +34,7 @@ const defaultValues = {
   plaza: "",
 };
 
-const Filter = (props: Props) => {
+const Filter = ({ navigation }: Props) => {
   const { bottom: paddingBottom } = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -194,9 +193,17 @@ const Filter = (props: Props) => {
         />
       </ScrollView>
       {data && data.length > 0 && (
-        <View style={styles.infoContainer}>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("Dashboard", {
+              data: data,
+              filter,
+            })
+          }
+          style={styles.infoContainer}
+        >
           <Text>{data.length} animales encontrados</Text>
-        </View>
+        </Pressable>
       )}
       {/* <View style={styles.infoContainer}>
         <Text>328 animales encontrados</Text>

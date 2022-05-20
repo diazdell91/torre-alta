@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AnimalItem from "./components/AnimalItem";
 import TableHeader from "./components/TableHeader";
 import { GET_CATTLE_LIST, cattleServices } from "../../apis/cattle";
@@ -9,26 +9,42 @@ import { COLORS } from "../../theme/Theme";
 
 type Props = any;
 
-const Dashboard = ({ navigation }: Props) => {
-  const [axiosFetch, data, loading, error] = useAxios();
-
-  const getCattleList = () => {
-    axiosFetch({
-      axiosInstance: cattleServices,
-      method: "GET",
-      url: `${GET_CATTLE_LIST}`,
-    });
-  };
+const Dashboard = ({ navigation, route }: Props) => {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getCattleList();
-  }, []);
+    setLoading(true);
+    if (route.params?.filter) {
+      cattleServices
+        .get(
+          `https://torrealta.jumpintotech.es/rest/api/v1/animal/getBy?${route.params?.filter}`
+        )
+        .then((res) => {
+          setData(res.data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      cattleServices
+        .get(GET_CATTLE_LIST)
+        .then((res) => {
+          setData(res.data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [route.params?.filter]);
 
   if (loading) {
     return <LoadingScreen color={COLORS.primary} />;
   }
 
-  if (data && !loading && !error) {
+  //console.log(data);
+
+  if (data && !loading) {
     return (
       <View style={styles.container}>
         <FlatList
