@@ -24,6 +24,7 @@ function useAxios(): [
       });
 
       setData(res.data);
+      return res.data;
     } catch (err: any) {
       console.log("Axios Error", err);
       setError(err.message);

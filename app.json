@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -25,8 +27,9 @@
         "backgroundColor": "#ffffff"
       }
     },
-
     "description": "",
-    "plugins": ["expo-image-picker"]
+    "plugins": [
+      "expo-image-picker"
+    ]
   }
 }

@@ -5,5 +5,15 @@ import Button from "./Button";
 import Icon from "./Icon";
 import Notifications from "./Notifications";
 import InputSelect from "./InputSelect";
+import Divider from "./Divider";
 
-export { Text, Input, Loading, Button, Icon, Notifications, InputSelect };
+export {
+  Text,
+  Input,
+  Loading,
+  Button,
+  Icon,
+  Notifications,
+  InputSelect,
+  Divider,
+};

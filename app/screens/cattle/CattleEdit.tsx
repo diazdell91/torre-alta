@@ -1,15 +1,39 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useForm, Controller } from "react-hook-form";
 import { Button, Input, InputSelect, Notifications } from "../../components";
 import { COLORS, SIZES } from "../../theme/Theme";
-import { updateCattle } from "../../apis/cattle";
+import {
+  cattleServices,
+  SELECT_BULLF,
+  SELECT_BULLF_TROPHY,
+  SELECT_BULL_TROPHY,
+  SELECT_EXERCISE,
+  SELECT_FEED,
+  SELECT_HAIR,
+  SELECT_PLACE,
+  SELECT_SEX,
+  updateCattle,
+} from "../../apis/cattle";
 import LoadingScreen from "../loading/LoadingScreen";
 import IconAdd from "../../router/components/IconAdd";
 import { defaultValues } from "./deaultValues";
 import { cleanEmptyObj } from "../../helper/cleanEmptyObj";
 import CollapseCardEdit from "./components/CollapseCardEdit";
+import objToArray from "../../helper/objToArray";
+
+import InputDropDown from "../../components/InputDropDown";
+
+interface SelectsParams {
+  sex: Array<any>;
+  hair: Array<any>;
+  bullf: Array<any>;
+  place: Array<any>;
+  bullTrophy: Array<any>;
+  bullfTrophy: Array<any>;
+  exercise: Array<any>;
+  feed: Array<any>;
+}
 
 const CattleEdit = ({ navigation, route }: any) => {
   const { bottom } = useSafeAreaInsets();
@@ -17,16 +41,19 @@ const CattleEdit = ({ navigation, route }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const [pelo, setPelo] = useState<any>(defaultValues.pelo);
-
-  useEffect(() => {
-    if (route.params.item) {
-      setPelo(route.params.item);
-    }
-  }, [route.params?.item]);
-
   const [values, setValues] = useState(defaultValues);
+
+  //selects
+  const [selects, setSelects] = useState<SelectsParams>({
+    sex: [],
+    hair: [],
+    bullf: [],
+    place: [],
+    bullTrophy: [],
+    bullfTrophy: [],
+    exercise: [],
+    feed: [],
+  });
 
   const handleChange = useCallback(
     (name: string, value: string) => {
@@ -38,18 +65,11 @@ const CattleEdit = ({ navigation, route }: any) => {
     [values]
   );
 
-  const {
-    control,
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-  });
-  const onSubmit = async (formData: any) => {
-    const data = { ...formData, ...{ ID: id, pelo: pelo.key } };
-    const cleanData = cleanEmptyObj(data);
+  const onSubmit = async (values: any) => {
     setIsLoading(true);
+    const data = { ...values, ...{ ID: id } };
+    const cleanData = cleanEmptyObj(data);
+
     const resp = await updateCattle({
       ...cleanData,
     });
@@ -60,12 +80,56 @@ const CattleEdit = ({ navigation, route }: any) => {
       navigation.goBack();
     }
     if (resp.error) {
-      //console.log(resp.error);
+      console.log(resp.error);
       setIsLoading(false);
       setIsVisible(true);
       setError("Error al actualizar este animal");
     }
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    const getSelects = async () => {
+      let urls = [
+        SELECT_SEX,
+        SELECT_HAIR,
+        SELECT_BULLF,
+        SELECT_PLACE,
+        SELECT_BULL_TROPHY,
+        SELECT_BULLF_TROPHY,
+        SELECT_EXERCISE,
+        SELECT_FEED,
+      ];
+      let requestSelects = urls.map((url) => cattleServices.get(url));
+      Promise.all(requestSelects)
+        .then((resp) => {
+          const sex = objToArray(resp[0].data as any);
+          const hair = objToArray(resp[1].data as any);
+          const bullf = objToArray(resp[2].data as any);
+          const place = objToArray(resp[3].data as any);
+          const bullTrophy = objToArray(resp[4].data as any);
+          const bullfTrophy = objToArray(resp[5].data as any);
+          const exercise = objToArray(resp[6].data as any);
+          const feed = objToArray(resp[7].data as any);
+
+          setSelects({
+            sex,
+            hair,
+            bullf,
+            place,
+            bullTrophy,
+            bullfTrophy,
+            exercise,
+            feed,
+          });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    getSelects();
+  }, []);
 
   if (isLoading) {
     return <LoadingScreen color={COLORS.primary} />;
@@ -75,250 +139,115 @@ const CattleEdit = ({ navigation, route }: any) => {
     <View style={{ ...styles.container, paddingBottom: bottom }}>
       <ScrollView contentInset={{ bottom }}>
         <View style={styles.inputNcontainer}>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                flex
-                placeholder="N° caballo"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                style={styles.inputN}
-              />
-            )}
-            name="media_caballo"
+          <Input
+            flex
+            placeholder="N° caballo"
+            onChangeText={(text) => handleChange("media_caballo", text)}
+            keyboardType="numeric"
+            style={styles.inputN}
           />
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                flex
-                placeholder="N° Muleta"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                style={styles.inputN}
-              />
-            )}
-            name="media_muleta"
+          <Input
+            flex
+            placeholder="N° Muleta"
+            onChangeText={(text) => handleChange("media_muleta", text)}
+            keyboardType="numeric"
+            style={styles.inputN}
           />
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                flex
-                placeholder="N° media"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                style={styles.inputN}
-              />
-            )}
-            name="media_total"
+          <Input
+            flex
+            placeholder="N° media"
+            onChangeText={(text) => handleChange("media_total", text)}
+            keyboardType="numeric"
+            style={styles.inputN}
           />
         </View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Guarismo"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              iconRight={"flechaAbajo"}
-            />
-          )}
-          name="guarismo"
+        <InputSelect placeholder="Guarismo" iconRight={"flechaAbajo"} />
+
+        <Input
+          placeholder="N°"
+          onChangeText={(text) => handleChange("numero", text)}
+          keyboardType="numeric"
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="N°"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="numero"
+        <InputDropDown
+          data={selects.sex}
+          placeholder="Sexo"
+          value={values.sexo}
+          onChange={(item) => {
+            setValues({ ...values, sexo: item.value });
+          }}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <InputSelect
-              placeholder="Sexo"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              iconRight={"flechaAbajo"}
-              onRightPress={() => navigation.navigate("SelectSex")}
-            />
-          )}
-          name="sexo"
+
+        <InputDropDown
+          data={selects.hair}
+          placeholder="Pelo"
+          value={values.pelo}
+          onChange={(item) => {
+            setValues({ ...values, pelo: item.value });
+          }}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur } }) => (
-            <InputSelect
-              placeholder="Pelo"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={pelo.value}
-              iconRight={"flechaAbajo"}
-              onRightPress={() => navigation.navigate("SelectHair")}
-            />
-          )}
-          name="pelo"
+
+        <Input
+          placeholder="Madre o número..."
+          onChangeText={(text) => handleChange("madre", text)}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Madre o número..."
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="madre"
+        <Input
+          placeholder="Padre o número..."
+          onChangeText={(text) => handleChange("padre", text)}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Padre o número..."
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="padre"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Fecha de lidea"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              iconRight={"calendar"}
-            />
-          )}
-          name="fecha_lidia"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.inputRowIcon}>
-              <InputSelect
-                placeholder="Joselito Adame"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                iconRight={"flechaAbajo"}
-                onRightPress={() => navigation.navigate("SelectBullFighter")}
-              />
-              <IconAdd style={{ marginEnd: SIZES.m }} />
-            </View>
-          )}
-          name="torero"
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.inputRowIcon}>
-              <InputSelect
-                placeholder="Lugar"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                iconRight={"flechaAbajo"}
-                onRightPress={() => navigation.navigate("SelectPlace")}
-              />
-              <IconAdd style={{ marginEnd: SIZES.m }} />
-            </View>
-          )}
-          name="lugar"
-        />
+        <Input placeholder="Fecha de lidea" iconRight={"calendar"} />
+        <View style={styles.inputRowIcon}>
+          <InputDropDown
+            data={selects.bullf}
+            placeholder="Torero"
+            value={values.torero}
+            onChange={(item) => {
+              setValues({ ...values, torero: item.value });
+            }}
+          />
+          <IconAdd style={{ marginEnd: SIZES.m }} />
+        </View>
+
+        <View style={styles.inputRowIcon}>
+          <InputDropDown
+            data={selects.place}
+            placeholder="Lugar"
+            value={values.lugar}
+            onChange={(item) => {
+              setValues({ ...values, lugar: item.value });
+            }}
+          />
+          <IconAdd style={{ marginEnd: SIZES.m }} />
+        </View>
+
         <View style={styles.inputNcontainer}>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                flex
-                placeholder="F.Alta"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                iconRight={"calendar"}
-                style={styles.inputN}
-              />
-            )}
-            name="lugar"
+          <Input
+            flex
+            placeholder="F.Alta"
+            iconRight={"calendar"}
+            style={styles.inputN}
           />
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                flex
-                placeholder="F.Baja"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                iconRight={"calendar"}
-                style={styles.inputN}
-              />
-            )}
-            name="lugar"
+          <Input
+            flex
+            placeholder="F.Baja"
+            iconRight={"calendar"}
+            style={styles.inputN}
           />
         </View>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Destino"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="destino"
+
+        <Input
+          placeholder="Destino"
+          onChangeText={(text) => handleChange("destino", text)}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Crotal"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="crotal"
+
+        <Input
+          placeholder="Crotal"
+          onChangeText={(text) => handleChange("crotal", text)}
         />
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Observaciones de campo..."
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              multiline
-              style={{
-                minHeight: SIZES.inputHeight * 2,
-                paddingTop: SIZES.m,
-                paddingBottom: SIZES.m,
-              }}
-            />
-          )}
-          name="crotal"
-        />
+
         <CollapseCardEdit title="Caballo">
           <Input
-            placeholder="Observaciones de campo..."
+            placeholder="Descricción..."
+            onChangeText={(text) => handleChange("caballo_descripcion", text)}
             multiline
             style={{
               minHeight: SIZES.inputHeight * 2,
@@ -329,83 +258,213 @@ const CattleEdit = ({ navigation, route }: any) => {
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("distancia_caballo")}
               placeholder="Distancia"
+              onChangeText={(text) => handleChange("distancia_caballo", text)}
             />
-            <Input flex {...register("fijeza_caballo")} placeholder="Fijeza" />
+            <Input
+              flex
+              placeholder="Fijeza"
+              onChangeText={(text) => handleChange("fijeza_caballo", text)}
+            />
           </View>
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("prontitud_caballo")}
               placeholder="Prontitud"
+              onChangeText={(text) => handleChange("prontitud_caballo", text)}
             />
-            <Input flex {...register("galope_caballo")} placeholder="Galope" />
+            <Input
+              flex
+              placeholder="Galope"
+              onChangeText={(text) => handleChange("galope_caballo", text)}
+            />
           </View>
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("humilla_caballo")}
               placeholder="Humilla"
+              onChangeText={(text) => handleChange("humilla_caballo", text)}
             />
-            <Input flex {...register("empuja_caballo")} placeholder="Empuja" />
+            <Input
+              flex
+              placeholder="Empuja"
+              onChangeText={(text) => handleChange("empuja_caballo", text)}
+            />
           </View>
         </CollapseCardEdit>
 
         <CollapseCardEdit title="Muleta">
+          <Input
+            placeholder="Descricción..."
+            onChangeText={(text) => handleChange("muleta_descripcion", text)}
+            multiline
+            style={{
+              minHeight: SIZES.inputHeight * 2,
+              paddingTop: SIZES.m,
+              paddingBottom: SIZES.m,
+            }}
+          />
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("distancia_caballo")}
-              placeholder="Distancia"
+              placeholder="Bravura"
+              onChangeText={(text) => handleChange("bravura_muleta", text)}
             />
-            <Input flex {...register("fijeza_caballo")} placeholder="Fijeza" />
+            <Input
+              flex
+              placeholder="Fijeza"
+              onChangeText={(text) => handleChange("fijeza_muleta", text)}
+            />
           </View>
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("prontitud_caballo")}
+              placeholder="Empleo"
+              onChangeText={(text) => handleChange("empleo_muleta", text)}
+            />
+            <Input
+              flex
+              placeholder="Repetir"
+              onChangeText={(text) => handleChange("repetir_muleta", text)}
+            />
+          </View>
+          <View style={styles.inputNcontainer}>
+            <Input
+              flex
+              placeholder="Querencia"
+              onChangeText={(text) => handleChange("querencia_muleta", text)}
+            />
+            <Input
+              flex
               placeholder="Prontitud"
+              onChangeText={(text) => handleChange("prontitud_muleta", text)}
             />
-            <Input flex {...register("galope_caballo")} placeholder="Galope" />
           </View>
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("humilla_caballo")}
-              placeholder="Humilla"
+              placeholder="Desarrollo"
+              onChangeText={(text) => handleChange("desarrollo_muleta", text)}
             />
-            <Input flex {...register("empuja_caballo")} placeholder="Empuja" />
+            <Input
+              flex
+              placeholder="Nobleza"
+              onChangeText={(text) => handleChange("nobleza_muleta", text)}
+            />
+          </View>
+          <View style={styles.inputNcontainer}>
+            <Input
+              flex
+              placeholder="Humilla"
+              onChangeText={(text) => handleChange("humilla_muleta", text)}
+            />
+            <Input
+              flex
+              placeholder="Rectitud"
+              onChangeText={(text) => handleChange("rectitud_muleta", text)}
+            />
+          </View>
+          <View style={styles.inputNcontainer}>
+            <Input
+              flex
+              placeholder="Recorrido"
+              onChangeText={(text) => handleChange("recorrido_muleta", text)}
+            />
+            <Input
+              flex
+              placeholder="Movilidad"
+              onChangeText={(text) => handleChange("movilidad_muleta", text)}
+            />
+          </View>
+          <View style={styles.inputNcontainer}>
+            <Input
+              flex
+              placeholder="Clase"
+              onChangeText={(text) => handleChange("clase_muleta", text)}
+            />
+            <Input
+              flex
+              placeholder="Fuerza"
+              onChangeText={(text) => handleChange("fuerza_muleta", text)}
+            />
+          </View>
+          <View style={styles.inputNcontainer}>
+            <Input
+              flex
+              placeholder="Empuja"
+              onChangeText={(text) => handleChange("empuja_muleta", text)}
+            />
+            <Input
+              flex
+              placeholder="Fuerza"
+              onChangeText={(text) => handleChange("fuerza_muleta", text)}
+            />
           </View>
         </CollapseCardEdit>
         <CollapseCardEdit title="Detalles">
+          <Input
+            placeholder="Descricción..."
+            onChangeText={(text) => handleChange("detalles_descripcion", text)}
+            multiline
+            style={{
+              minHeight: SIZES.inputHeight * 2,
+              paddingTop: SIZES.m,
+              paddingBottom: SIZES.m,
+            }}
+          />
+
+          <InputDropDown
+            data={selects.bullTrophy}
+            placeholder="Trofeo Toro"
+            value={values.lugar}
+            onChange={(item) => {
+              setValues({ ...values, trofeo_toro_detalles: item.value });
+            }}
+          />
+          <InputDropDown
+            data={selects.bullfTrophy}
+            placeholder="Trofeo Torero"
+            value={values.lugar}
+            onChange={(item) => {
+              setValues({ ...values, trofeo_torero_detalles: item.value });
+            }}
+          />
+          <InputDropDown
+            data={selects.exercise}
+            placeholder="Ejercicio Físico"
+            value={values.lugar}
+            onChange={(item) => {
+              setValues({ ...values, ejercicio_fisico_detalles: item.value });
+            }}
+          />
+
+          <InputDropDown
+            data={selects.feed}
+            placeholder="Ejercicio Físico"
+            value={values.lugar}
+            onChange={(item) => {
+              setValues({ ...values, pienso_detalles: item.value });
+            }}
+          />
           <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("distancia_caballo")}
-              placeholder="Distancia"
+              placeholder="Nota"
+              onChangeText={(text) => handleChange("nota_detalles", text)}
             />
-            <Input flex {...register("fijeza_caballo")} placeholder="Fijeza" />
-          </View>
-          <View style={styles.inputNcontainer}>
             <Input
               flex
-              {...register("prontitud_caballo")}
-              placeholder="Prontitud"
+              placeholder="Peso"
+              onChangeText={(text) => handleChange("peso_detalles", text)}
             />
-            <Input flex {...register("galope_caballo")} placeholder="Galope" />
-          </View>
-          <View style={styles.inputNcontainer}>
-            <Input
-              flex
-              {...register("humilla_caballo")}
-              placeholder="Humilla"
-            />
-            <Input flex {...register("empuja_caballo")} placeholder="Empuja" />
           </View>
         </CollapseCardEdit>
+
         <Input
           placeholder="Observaciones de campo..."
+          onChangeText={(text) =>
+            handleChange("detalles_observaciones_campo", text)
+          }
           multiline
           style={{
             minHeight: SIZES.inputHeight * 2,
@@ -414,7 +473,7 @@ const CattleEdit = ({ navigation, route }: any) => {
           }}
         />
       </ScrollView>
-      <Button title="Aplicar" onPress={handleSubmit(onSubmit)} />
+      <Button title="Aplicar" onPress={() => onSubmit(values)} />
       <Notifications
         isVisible={isVisible}
         handleVisible={() => setIsVisible(false)}
@@ -445,5 +504,50 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+
+  //
+  dropdown: {
+    margin: 16,
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

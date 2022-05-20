@@ -20,7 +20,7 @@ const cattleServices = axios.create({
 const GET_CATTLE_LIST = `animales/listado`;
 const GET_CATTLE_BY_ID = `animal/detalle/`;
 const GET_CATTLE_CHILD_BY_ID = `animal/hijos/`;
-const GET_VIDEO = `video/filter?ID=UCI022M034`;
+const GET_VIDEO = `video/filter?ID=`;
 const SELECT_HAIR = `pelo/select`;
 const SELECT_SEX = `sexo/select`;
 const SELECT_CATTLE = `ganaderia/select`;

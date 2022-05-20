@@ -8,13 +8,6 @@ import CattleLayout from "../screens/cattle/CattleLayout";
 import CattleEdit from "../screens/cattle/CattleEdit";
 import IconBackWhite from "./components/IconBackWhite";
 import IconEdit from "./components/IconEdit";
-import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import {
-  SelectHair,
-  SelectSex,
-  SelectBullFighter,
-  SelectPlace,
-} from "../screens/selects";
 
 const Main = createNativeStackNavigator();
 
@@ -99,20 +92,6 @@ function MainNavigator() {
             },
           })}
         />
-      </Main.Group>
-      <Main.Group
-        screenOptions={({ navigation }) => ({
-          presentation: "modal",
-          headerShown: false,
-          headerRight: () => (
-            <Icon name="close" size={24} onPress={() => navigation.goBack()} />
-          ),
-        })}
-      >
-        <Main.Screen name="SelectHair" component={SelectHair} />
-        <Main.Screen name="SelectSex" component={SelectSex} />
-        <Main.Screen name="SelectBullFighter" component={SelectBullFighter} />
-        <Main.Screen name="SelectPlace" component={SelectPlace} />
       </Main.Group>
     </Main.Navigator>
   );

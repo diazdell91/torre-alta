@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { COLORS, SIZES } from "../../../theme/Theme";
 import { Video, AVPlaybackStatus } from "expo-av";
+import Layout from "../../../theme/Layout";
 
 type Props = {
   uri: string;
@@ -9,7 +10,9 @@ type Props = {
 
 const VideoPlayer = ({ uri }: Props) => {
   const video = React.useRef<any>(null);
+
   const [status, setStatus] = React.useState({});
+
   return (
     <View style={styles.container}>
       <Video
@@ -22,8 +25,6 @@ const VideoPlayer = ({ uri }: Props) => {
         isLooping
         onPlaybackStatusUpdate={(status) => setStatus(() => status)}
       />
-      {/* 
-      <Icon name="playx3" style={{ height: 56, width: 56 }} /> */}
     </View>
   );
 };
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     minHeight: 240,
+    minWidth: Layout.window.width - 32,
   },
   video: {
     flex: 1,

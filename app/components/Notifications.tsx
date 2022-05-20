@@ -20,7 +20,11 @@ const Notifications = (props: Props) => {
   const { isVisible = false, handleVisible, notification } = props;
 
   return (
-    <Modal isVisible={isVisible} onBackdropPress={() => handleVisible(false)}>
+    <Modal
+      isVisible={isVisible}
+      style={{ margin: 0 }}
+      onBackdropPress={() => handleVisible(false)}
+    >
       <View style={styles.container}>
         <Text h1 color={COLORS.primary}>
           {notification.title}
@@ -46,8 +50,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white2,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: SIZES.xs,
-    padding: SIZES.m,
   },
   wrapperDesc: {
     marginTop: SIZES.m,

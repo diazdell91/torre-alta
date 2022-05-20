@@ -1,7 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import LoadingScreen from "../loading/LoadingScreen";
-import { COLORS } from "../../theme/Theme";
+import { ScrollView, StyleSheet, View } from "react-native";
 import AnimalCard from "./components/AnimalCard";
 import AnirmalCardInfo from "./components/AnirmalCardInfo";
 import CollapseCard from "./components/CollapseCard";
@@ -13,16 +11,10 @@ import { AnimalProps } from "../../types";
 
 type Props = {
   data: any;
-  loading: boolean;
-  error: string;
 };
 
-const CattleGeneral = ({ data, loading, error }: Props) => {
-  if (loading) {
-    return <LoadingScreen color={COLORS.primary} />;
-  }
-
-  if (data && !loading && !error) {
+const CattleGeneral = ({ data }: Props) => {
+  if (data) {
     const animal = data[0];
     const { caballo, detalles, observaciones_campo, muleta } =
       animal as AnimalProps;
@@ -42,19 +34,21 @@ const CattleGeneral = ({ data, loading, error }: Props) => {
       crotal: animal.crotal,
     };
     return (
-      <View>
-        <AnimalCard />
-        <AnirmalCardInfo data={info} />
-        <CollapseCard title="Caballo">
-          <CaballoCard data={caballo} />
-        </CollapseCard>
-        <CollapseCard title="Muleta">
-          <MuletaCard data={muleta} />
-        </CollapseCard>
-        <CollapseCard title="Detalles">
-          <DetailsCard data={detalles} />
-        </CollapseCard>
-        <Obaservations observations={observaciones_campo} />
+      <View style={styles.container}>
+        <ScrollView>
+          <AnimalCard />
+          <AnirmalCardInfo data={info} />
+          <CollapseCard title="Caballo">
+            <CaballoCard data={caballo} />
+          </CollapseCard>
+          <CollapseCard title="Muleta">
+            <MuletaCard data={muleta} />
+          </CollapseCard>
+          <CollapseCard title="Detalles">
+            <DetailsCard data={detalles} />
+          </CollapseCard>
+          <Obaservations observations={observaciones_campo} />
+        </ScrollView>
       </View>
     );
   }
@@ -63,3 +57,9 @@ const CattleGeneral = ({ data, loading, error }: Props) => {
 };
 
 export default CattleGeneral;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

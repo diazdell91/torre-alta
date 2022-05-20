@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import VideoPlayer from "./components/VideoPlayer";
+import { StyleSheet, View } from "react-native";
 import VideoButton from "./components/VideoButton";
 import UploadProgress from "./components/UploadProgress";
-import LoadingScreen from "../loading/LoadingScreen";
-import { COLORS } from "../../theme/Theme";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
+import VideoList from "./components/VideoList";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const BASE_URL = "https://torrealta.jumpintotech.es/rest/api/v1/";
 
 declare global {
@@ -25,13 +24,13 @@ declare global {
 type Props = {
   id: string;
   data: any;
-  loading: boolean;
-  error: string;
 };
 
-const CattleVideo = ({ id, data, loading, error }: Props) => {
+const CattleVideo = ({ id, data }: Props) => {
   const [percentCompleted, setPercentCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { bottom: paddingBottom } = useSafeAreaInsets();
+
   const pickVideo = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -87,19 +86,14 @@ const CattleVideo = ({ id, data, loading, error }: Props) => {
     }
   };
 
-  if (loading) {
-    return <LoadingScreen color={COLORS.primary} />;
-  }
-  if (data && !loading && !error) {
-    //console.log(data);
-    const url = data[0].videos[0];
+  if (data) {
+    const videos = data[0].videos;
 
     return (
-      <View style={styles.container}>
-        <VideoPlayer uri={url} />
-        <VideoButton onPress={pickVideo} />
-
+      <View style={{ ...styles.container, paddingBottom }}>
         {isLoading && <UploadProgress progress={percentCompleted} />}
+        <VideoButton onPress={pickVideo} />
+        {videos.length >= 0 && <VideoList videos={data[0].videos} />}
       </View>
     );
   }
@@ -112,6 +106,5 @@ export default CattleVideo;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
   },
 });

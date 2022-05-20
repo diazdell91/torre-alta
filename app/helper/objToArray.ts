@@ -1,10 +1,10 @@
 interface ArrType {
-  key: string;
+  label: string;
   value: string;
 }
 const objToArray = (obj: object): ArrType[] => {
   var arr = Object.keys(obj).map(function (key) {
-    return { key: key, value: obj[key as keyof typeof obj] };
+    return { value: key, label: obj[key as keyof typeof obj] };
   });
 
   return arr;

@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
 import React from "react";
+import { StyleSheet, View } from "react-native";
 import { COLORS, SIZES } from "../../../theme/Theme";
 import { Text } from "../../../components";
 import * as Progress from "react-native-progress";
@@ -13,24 +13,23 @@ type Props = {
 const UploadProgress = ({ progress }: Props) => {
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Icon name="progress-upload" size={22} style={{ marginEnd: 4 }} />
         <View style={{ flex: 1 }}>
           <Text>Subiendo video</Text>
         </View>
       </View>
-      <View style={{ flex: 1 }}>
-        <Progress.Bar
-          progress={progress / 100}
-          unfilledColor={COLORS.backDrop}
-          color={COLORS.primary}
-          borderColor={COLORS.backDrop}
-          height={SIZES.xs}
-          borderRadius={SIZES.s}
-          width={Layout.window.width * 0.85}
-          style={{ marginTop: SIZES.s }}
-        />
-      </View>
+
+      <Progress.Bar
+        progress={progress / 100}
+        unfilledColor={COLORS.backDrop}
+        color={COLORS.primary}
+        borderColor={COLORS.backDrop}
+        height={SIZES.xs}
+        borderRadius={SIZES.s}
+        width={Layout.window.width * 0.85}
+        style={{ marginTop: SIZES.s }}
+      />
     </View>
   );
 };
@@ -39,7 +38,7 @@ export default UploadProgress;
 
 const styles = StyleSheet.create({
   container: {
-    margin: SIZES.m,
+    marginHorizontal: SIZES.m,
     borderRadius: SIZES.s,
     justifyContent: "space-between",
     alignItems: "center",

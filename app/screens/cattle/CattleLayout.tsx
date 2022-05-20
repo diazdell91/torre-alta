@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StyleSheet, View } from "react-native";
 import {
   cattleServices,
   GET_CATTLE_BY_ID,
@@ -8,7 +7,7 @@ import {
   GET_VIDEO,
 } from "../../apis/cattle";
 import TopTabs from "../../components/TopTabs";
-import useAxios from "../../hooks/useAxios";
+import LoadingScreen from "../loading/LoadingScreen";
 import CattleChild from "./CattleChild";
 import CattleGeneral from "./CattleGeneral";
 import CattleTree from "./CattleTree";
@@ -20,84 +19,73 @@ const tabs = ["General", "Hijos", "Video"];
 
 const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
-  const { bottom } = useSafeAreaInsets();
   const [selectedTab, setSelectedTab] = useState("General");
-
-  const [getCattleById, dataGeneral, loadingGeneral, errorGeneral] = useAxios();
-  const [getCattleChild, dataChild, loadingChild, errorChild] = useAxios();
-  //const [getCattleTree, dataTree, loadingTree, errorTree] = useAxios();
-  const [getVideoUrl, dataVideo, loadingVideo, errorVideo] = useAxios();
+  const [cattle, setCattle] = useState({});
+  const [cattleChild, setCattleChild] = useState([]);
+  const [videos, setVideos] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getCattleById({
-      axiosInstance: cattleServices,
-      method: "GET",
-      url: `${GET_CATTLE_BY_ID}${id}`,
-    });
+    setLoading(true);
+    let urls = [
+      `${GET_CATTLE_BY_ID}${id}`,
+      `${GET_CATTLE_CHILD_BY_ID}${id}`,
+      `${GET_VIDEO}${id}`,
+    ];
+
+    let requestCattleDetail = urls.map((url) => cattleServices.get(url));
+
+    Promise.all(requestCattleDetail)
+      .then((response) => {
+        //console.log(response[0].config.url);
+        response.map((res) => {
+          if (res.status === 200) {
+            //console.log(res);
+            if (res.config.url === `${GET_CATTLE_BY_ID}${id}`) {
+              setCattle(res.data);
+            }
+            if (res.config.url === `${GET_CATTLE_CHILD_BY_ID}${id}`) {
+              setCattleChild(res.data);
+            }
+            if (res.config.url === `${GET_VIDEO}${id}`) {
+              setVideos(res.data);
+            }
+          }
+        });
+      })
+      .catch((error) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
-    if (tab === "General") {
-      getCattleById({
-        axiosInstance: cattleServices,
-        method: "GET",
-        url: `${GET_CATTLE_BY_ID}${id}`,
-      });
-    }
-    if (tab === "Hijos") {
-      getCattleChild({
-        axiosInstance: cattleServices,
-        method: "GET",
-        url: `${GET_CATTLE_CHILD_BY_ID}${id}`,
-      });
-    }
-    if (tab === "Video") {
-      getVideoUrl({
-        axiosInstance: cattleServices,
-        method: "GET",
-        url: `video/filter?ID=${id}`,
-      });
-    }
   };
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  console.log(cattle);
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentInset={{
-        bottom,
-      }}
-    >
+    <View style={styles.container}>
       <TopTabs
         tabs={tabs}
         tabSelected={selectedTab}
         handleSelectTab={handleTabChange}
       />
-      {selectedTab === "General" && (
-        <CattleGeneral
-          data={dataGeneral}
-          loading={loadingGeneral}
-          error={errorGeneral}
-        />
-      )}
-      {selectedTab === "Hijos" && (
-        <CattleChild
-          data={dataChild}
-          loading={loadingChild}
-          error={errorChild}
-        />
-      )}
+      {selectedTab === "General" && <CattleGeneral data={cattle} />}
+      {selectedTab === "Hijos" && <CattleChild data={cattleChild} />}
       {selectedTab === "Árbol" && <CattleTree />}
-      {selectedTab === "Video" && (
-        <CattleVideo
-          id={id}
-          data={dataVideo}
-          loading={loadingVideo}
-          error={errorVideo}
-        />
-      )}
-    </ScrollView>
+      {selectedTab === "Video" && <CattleVideo id={id} data={videos} />}
+    </View>
   );
 };
 
 export default CattleLayout;
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});
