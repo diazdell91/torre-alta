@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.expo.torre-alta"
@@ -27,6 +29,8 @@
       }
     },
     "description": "",
-    "plugins": ["expo-image-picker"]
+    "plugins": [
+      "expo-image-picker"
+    ]
   }
 }

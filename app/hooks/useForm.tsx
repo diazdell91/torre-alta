@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-const useForm = (initalValues: { [prop: string]: string }) => {
+const useForm = (
+  initalValues: any
+): {
+  values: typeof initalValues;
+  handleChange: (name: string, value: string) => void;
+  clear: () => void;
+} => {
   const [values, setValues] = useState(initalValues);
 
   const handleChange = (name: string, value: string) => {
@@ -14,11 +20,7 @@ const useForm = (initalValues: { [prop: string]: string }) => {
     setValues(initalValues);
   };
 
-  return {
-    values,
-    handleChange,
-    clear,
-  };
+  return { values, handleChange, clear };
 };
 
 export default useForm;

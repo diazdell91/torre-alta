@@ -33,6 +33,7 @@ const SELECT_BULLF = `torero/select`;
 const SELECT_BULLF_TROPHY = `trofeotorero/select`;
 const SELECT_BULL_TROPHY = `trofeotoro/select`;
 const SELECT_PLAZA = `plaza/select`;
+const SELECT_DEST = `destino/select`;
 
 const updateCattle = async (dataCattle: any) => {
   const url = `${BASE_URL}animal/editaranimal`;
@@ -95,4 +96,5 @@ export {
   SELECT_BULLF_TROPHY,
   SELECT_BULL_TROPHY,
   SELECT_PLAZA,
+  SELECT_DEST,
 };

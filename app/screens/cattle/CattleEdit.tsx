@@ -163,7 +163,11 @@ const CattleEdit = ({ navigation, route }: any) => {
             style={styles.inputN}
           />
         </View>
-        {/* <InputSelect placeholder="Guarismo" iconRight={"flechaAbajo"} /> */}
+        <Input
+          placeholder="Guarismo"
+          onChangeText={(text) => handleChange("guarismo", text)}
+          keyboardType="numeric"
+        />
         <Input
           placeholder="N°"
           onChangeText={(text) => handleChange("numero", text)}
