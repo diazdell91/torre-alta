@@ -1,9 +1,8 @@
-import { FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import AnimalItem from "./components/AnimalItem";
 import TableHeader from "./components/TableHeader";
 import { GET_CATTLE_LIST, cattleServices } from "../../apis/cattle";
-import useAxios from "../../hooks/useAxios";
 import LoadingScreen from "../loading/LoadingScreen";
 import { COLORS } from "../../theme/Theme";
 
@@ -21,6 +20,10 @@ const Dashboard = ({ navigation, route }: Props) => {
           `https://torrealta.jumpintotech.es/rest/api/v1/animal/getBy?${route.params?.filter}`
         )
         .then((res) => {
+          console.log(res.status);
+          if (res.status === 200) {
+            navigation.setOptions({ title: `Torrealta(${res.data.length})` });
+          }
           setData(res.data);
         })
         .finally(() => {
@@ -31,6 +34,7 @@ const Dashboard = ({ navigation, route }: Props) => {
         .get(GET_CATTLE_LIST)
         .then((res) => {
           setData(res.data);
+          navigation.setOptions({ title: `Torrealta(${res.data.length})` });
         })
         .finally(() => {
           setLoading(false);
@@ -41,8 +45,6 @@ const Dashboard = ({ navigation, route }: Props) => {
   if (loading) {
     return <LoadingScreen color={COLORS.primary} />;
   }
-
-  //console.log(data);
 
   if (data && !loading) {
     return (

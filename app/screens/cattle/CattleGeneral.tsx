@@ -15,28 +15,37 @@ type Props = {
 
 const CattleGeneral = ({ data }: Props) => {
   if (data) {
+    console.log(data);
     const animal = data[0];
-    const { caballo, detalles, observaciones_campo, muleta } =
-      animal as AnimalProps;
+    const caballo = animal?.caballo;
+    const muleta = animal?.muleta;
+    const details = animal?.details;
+    const observations = animal?.observations;
+
+    const media = {
+      media_caballo: animal?.media_caballo,
+      media_muleta: animal?.media_muleta,
+      media_total: animal?.media_total,
+    };
 
     const info = {
-      guarismo: animal.guarismo,
-      numero: animal.numero,
-      sexo: animal.sexo,
-      pelo: animal.pelo,
-      madre: animal.madre,
-      padre: animal.padre,
-      fecha_lidia: animal.fecha_lidia,
-      torero: animal.torero,
-      lugar: animal.lugar,
-      fecha_ab: `${animal.fecha_alta} ${animal.fecha_baja}`,
-      destino: animal.destino,
-      crotal: animal.crotal,
+      guarismo: animal?.guarismo,
+      numero: animal?.numero,
+      sexo: animal?.sexo,
+      pelo: animal?.pelo,
+      madre: animal?.madre,
+      padre: animal?.padre,
+      fecha_lidia: animal?.fecha_lidia,
+      torero: animal?.torero,
+      lugar: animal?.lugar,
+      fecha_ab: `${animal?.fecha_alta} ${animal?.fecha_baja}`,
+      destino: animal?.destino,
+      crotal: animal?.crotal,
     };
     return (
       <View style={styles.container}>
         <ScrollView>
-          <AnimalCard />
+          <AnimalCard data={media} />
           <AnirmalCardInfo data={info} />
           <CollapseCard title="Caballo">
             <CaballoCard data={caballo} />
@@ -45,9 +54,9 @@ const CattleGeneral = ({ data }: Props) => {
             <MuletaCard data={muleta} />
           </CollapseCard>
           <CollapseCard title="Detalles">
-            <DetailsCard data={detalles} />
+            <DetailsCard data={details} />
           </CollapseCard>
-          <Obaservations observations={observaciones_campo} />
+          <Obaservations observations={observations} />
         </ScrollView>
       </View>
     );

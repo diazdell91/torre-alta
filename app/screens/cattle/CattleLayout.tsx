@@ -5,6 +5,7 @@ import {
   GET_CATTLE_BY_ID,
   GET_CATTLE_CHILD_BY_ID,
   GET_VIDEO,
+  SELECT_CATTLE_TREE,
 } from "../../apis/cattle";
 import TopTabs from "../../components/TopTabs";
 import LoadingScreen from "../loading/LoadingScreen";
@@ -21,9 +22,10 @@ const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
 
   const [selectedTab, setSelectedTab] = useState("General");
-  const [cattle, setCattle] = useState({});
-  const [cattleChild, setCattleChild] = useState([]);
-  const [videos, setVideos] = useState({});
+  const [cattle, setCattle] = useState(null);
+  const [cattleChild, setCattleChild] = useState(null);
+  const [videos, setVideos] = useState(null);
+  const [catteTree, setCattleTree] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,16 +34,15 @@ const CattleLayout = ({ navigation, route }: Props) => {
       `${GET_CATTLE_BY_ID}${id}`,
       `${GET_CATTLE_CHILD_BY_ID}${id}`,
       `${GET_VIDEO}${id}`,
+      `${SELECT_CATTLE_TREE}${id}`,
     ];
 
     let requestCattleDetail = urls.map((url) => cattleServices.get(url));
 
     Promise.all(requestCattleDetail)
       .then((response) => {
-        //console.log(response[0].config.url);
         response.map((res) => {
           if (res.status === 200) {
-            //console.log(res);
             if (res.config.url === `${GET_CATTLE_BY_ID}${id}`) {
               setCattle(res.data);
             }
@@ -51,6 +52,9 @@ const CattleLayout = ({ navigation, route }: Props) => {
             if (res.config.url === `${GET_VIDEO}${id}`) {
               setVideos(res.data);
             }
+            if (res.config.url === `${SELECT_CATTLE_TREE}${id}`) {
+              setCattleTree(res.data);
+            }
           }
         });
       })
@@ -58,7 +62,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [id, route]);
+  }, []);
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -68,8 +72,6 @@ const CattleLayout = ({ navigation, route }: Props) => {
     return <LoadingScreen />;
   }
 
-  console.log(cattle);
-
   return (
     <View style={styles.container}>
       <TopTabs
@@ -77,10 +79,15 @@ const CattleLayout = ({ navigation, route }: Props) => {
         tabSelected={selectedTab}
         handleSelectTab={handleTabChange}
       />
-      {selectedTab === "General" && <CattleGeneral data={cattle} />}
-      {selectedTab === "Hijos" && <CattleChild data={cattleChild} />}
-      {selectedTab === "Árbol" && <CattleTree />}
-      {selectedTab === "Video" && <CattleVideo id={id} data={videos} />}
+      {selectedTab === "General" && cattle && <CattleGeneral data={cattle} />}
+
+      {selectedTab === "Hijos" && cattleChild && (
+        <CattleChild data={cattleChild} />
+      )}
+      {selectedTab === "Árbol" && catteTree && <CattleTree data={catteTree} />}
+      {selectedTab === "Video" && videos && (
+        <CattleVideo id={id} data={videos} />
+      )}
     </View>
   );
 };
