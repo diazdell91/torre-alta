@@ -8,6 +8,7 @@ import {
   SELECT_CATTLE_TREE,
 } from "../../apis/cattle";
 import TopTabs from "../../components/TopTabs";
+import Error from "../error/Error";
 import LoadingScreen from "../loading/LoadingScreen";
 import CattleChild from "./CattleChild";
 import CattleGeneral from "./CattleGeneral";
@@ -26,7 +27,9 @@ const CattleLayout = ({ navigation, route }: Props) => {
   const [cattleChild, setCattleChild] = useState(null);
   const [videos, setVideos] = useState(null);
   const [catteTree, setCattleTree] = useState(null);
+  //handle fetching data
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -41,6 +44,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
 
     Promise.all(requestCattleDetail)
       .then((response) => {
+        console.log(response);
         response.map((res) => {
           if (res.status === 200) {
             if (res.config.url === `${GET_CATTLE_BY_ID}${id}`) {
@@ -58,11 +62,14 @@ const CattleLayout = ({ navigation, route }: Props) => {
           }
         });
       })
-      .catch((error) => {})
+      .catch((error) => {
+        console.log(error);
+        setError(error.message);
+      })
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [id, route]);
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -70,6 +77,10 @@ const CattleLayout = ({ navigation, route }: Props) => {
 
   if (loading) {
     return <LoadingScreen />;
+  }
+
+  if (error) {
+    return <Error message={error} />;
   }
 
   return (
