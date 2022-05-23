@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../theme/Theme";
 import Icon from "./Icon";
-import { IconType } from "../constants/Icons";
+import { IconType } from "./icons";
 
 type InputProps = {
   style?: StyleProp<ViewStyle>;

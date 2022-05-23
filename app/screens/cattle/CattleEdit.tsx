@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Button,
   Icon,
+  IconButton,
   Input,
   InputSelect,
   Notifications,
@@ -22,14 +23,12 @@ import {
   updateCattle,
 } from "../../apis/cattle";
 import LoadingScreen from "../loading/LoadingScreen";
-import IconAdd from "../../router/components/IconAdd";
+
 import { defaultValues } from "./deaultValues";
 import { cleanEmptyObj } from "../../helper/cleanEmptyObj";
 import CollapseCardEdit from "./components/CollapseCardEdit";
 import objToArray from "../../helper/objToArray";
 import InputDropDown from "../../components/InputDropDown";
-import IconFilter from "../../router/components/IconFilter";
-import IconBack from "../../router/components/IconBack";
 
 interface SelectsParams {
   sex: Array<any>;
@@ -64,7 +63,7 @@ const CattleEdit = ({ navigation, route }: any) => {
     feed: [],
   });
 
-  navigation.setOptions({ headerRight: () => <IconFilter /> });
+  navigation.setOptions({ headerRight: () => <IconButton name="Filter" /> });
 
   const handleChange = useCallback(
     (name: string, value: string) => {
@@ -232,13 +231,14 @@ const CattleEdit = ({ navigation, route }: any) => {
             />
           )}
           {customTorero ? (
-            <IconAdd
+            <IconButton
+              name="Plus"
               style={{ marginEnd: SIZES.m }}
               onPress={() => setCustomTorero(!customTorero)}
             />
           ) : (
-            <Icon
-              name="info"
+            <IconButton
+              name="Info"
               style={{ marginEnd: SIZES.m }}
               onPress={() => setCustomTorero(!customTorero)}
             />
@@ -252,7 +252,7 @@ const CattleEdit = ({ navigation, route }: any) => {
               setValues({ ...values, lugar: value });
             }}
           />
-          <IconAdd style={{ marginEnd: SIZES.m }} />
+          <IconButton name="Plus" style={{ marginEnd: SIZES.m }} />
         </View>
         <View style={styles.inputNcontainer}>
           <InputSelect

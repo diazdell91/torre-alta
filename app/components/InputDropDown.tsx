@@ -19,7 +19,7 @@ const InputDropDown = (props: Props): JSX.Element => {
         placeholder={{ label: `Selecciona ${placeholder}`, value: null }}
         Icon={() => (
           <View style={styles.iconRight}>
-            <Icon name="flechaAbajo" />
+            <Icon name="Down" />
           </View>
         )}
         onValueChange={onChange}

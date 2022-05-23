@@ -3,11 +3,9 @@ import Filter from "../screens/dashboard/Filter";
 import AddTask from "../screens/tasks/AddTask";
 import { COLORS, SIZES } from "../theme/Theme";
 import TabNavigator from "./BottomTab";
-import IconBack from "./components/IconBack";
 import CattleLayout from "../screens/cattle/CattleLayout";
 import CattleEdit from "../screens/cattle/CattleEdit";
-import IconBackWhite from "./components/IconBackWhite";
-import IconEdit from "./components/IconEdit";
+import IconButton from "../components/IconButton";
 
 const Main = createNativeStackNavigator();
 
@@ -35,26 +33,37 @@ function MainNavigator() {
           component={Filter}
           options={({ navigation }) => ({
             headerTitle: "Filtros",
-            headerLeft: () => <IconBack onPress={() => navigation.goBack()} />,
+            headerLeft: () => (
+              <IconButton name="Left" onPress={() => navigation.goBack()} />
+            ),
           })}
         />
         <Main.Screen
           name="AddTask"
           component={AddTask}
-          options={{
+          options={({ navigation }) => ({
             headerTitle: "Crear Tarea",
-          }}
+            headerLeft: () => (
+              <IconButton name="Left" onPress={() => navigation.goBack()} />
+            ),
+          })}
         />
         <Main.Screen
           name="CattleLayout"
           component={CattleLayout}
           options={({ navigation, route }: any) => ({
             headerLeft: () => (
-              <IconBackWhite onPress={() => navigation.goBack()} />
+              <IconButton
+                name="Left"
+                color={COLORS.white2}
+                onPress={() => navigation.goBack()}
+              />
             ),
 
             headerRight: () => (
-              <IconEdit
+              <IconButton
+                name="Edit"
+                color={COLORS.white2}
                 onPress={() =>
                   navigation.navigate("CattleEdit", {
                     id: route.params.id,
@@ -79,7 +88,11 @@ function MainNavigator() {
           component={CattleEdit}
           options={({ navigation, route }: any) => ({
             headerLeft: () => (
-              <IconBackWhite onPress={() => navigation.goBack()} />
+              <IconButton
+                name="Left"
+                color={COLORS.white2}
+                onPress={() => navigation.goBack()}
+              />
             ),
             headerStyle: {
               backgroundColor: COLORS.primary,

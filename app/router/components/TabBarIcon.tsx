@@ -1,13 +1,11 @@
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import React from "react";
+import Icon from "../../components/Icon";
 
 type Props = {
-  name?: React.ComponentProps<typeof Icon>["name"];
-  focused?: boolean;
-  color?: string;
+  name: React.ComponentProps<typeof Icon>["name"];
+  color: string;
 };
 function TabBarIcon(props: Props) {
-  const { name, focused, color, ...otherProps } = props;
+  const { name, color, ...otherProps } = props;
   return (
     <Icon
       size={24}

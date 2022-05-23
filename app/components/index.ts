@@ -7,6 +7,7 @@ import Notifications from "./Notifications";
 import InputSelect from "./InputSelect";
 import Divider from "./Divider";
 import ActivityIndicatorModal from "./ActivityIndicatorModal";
+import IconButton from "./IconButton";
 
 export {
   Text,
@@ -14,6 +15,7 @@ export {
   Loading,
   Button,
   Icon,
+  IconButton,
   Notifications,
   InputSelect,
   Divider,

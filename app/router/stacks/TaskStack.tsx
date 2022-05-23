@@ -1,9 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { IconButton } from "../../components";
 import { useAuth } from "../../context/auth/auth.provider";
 import TasksLayout from "../../screens/tasks/TasksLayout";
 import { COLORS, SIZES } from "../../theme/Theme";
-import IconAdd from "../components/IconAdd";
-import IconLogOut from "../components/IconLogOut";
 
 const TaskStack = createNativeStackNavigator();
 
@@ -26,13 +25,16 @@ function TaskNavigator() {
             fontSize: SIZES.h1,
           },
           headerLeft: () => (
-            <IconAdd
+            <IconButton
+              name="Plus"
               onPress={() => {
                 navigation.navigate("AddTask");
               }}
             />
           ),
-          headerRight: () => <IconLogOut onPress={() => signOut()} />,
+          headerRight: () => (
+            <IconButton name="LogOut" onPress={() => signOut()} />
+          ),
         })}
       />
     </TaskStack.Navigator>

@@ -1,0 +1,6 @@
+<svg width="24" height="24" viewBox="0 0 24 24" viewBox="0 0 24 24">
+    <g transform="translate(2 2)" stroke="#A90B2F" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="20" rx="10"/>
+        <path d="M10 4v11.31M15.655 9.655H4.345"/>
+    </g>
+</svg>

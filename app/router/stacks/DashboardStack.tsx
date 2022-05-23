@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { IconButton } from "../../components";
 import Dashboard from "../../screens/dashboard/Dashboard";
 import { COLORS, SIZES } from "../../theme/Theme";
-import IconFilter from "../components/IconFilter";
 import IconLogo from "../components/IconLogo";
 
 const DashboardStack = createNativeStackNavigator();
@@ -24,7 +23,8 @@ function DashboardNavigator() {
             fontSize: SIZES.h1,
           },
           headerLeft: () => (
-            <IconFilter
+            <IconButton
+              name="Filter"
               onPress={() => {
                 navigation.navigate("Filter");
               }}

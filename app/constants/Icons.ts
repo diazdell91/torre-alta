@@ -31,8 +31,3 @@ export const Icons = {
 };
 
 export type IconType = keyof typeof Icons;
-
-// let UKN_BRAND: any = {
-//   title: "Visa",
-//   brand: require("../../assets/brands/visa.png"),
-// };

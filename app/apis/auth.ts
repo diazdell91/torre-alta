@@ -46,4 +46,18 @@ const logout = async () => {
   return { data, error };
 };
 
-export { authServices, signIn, logout };
+const forgotPass = async () => {
+  const url = `${BASE_URL}user/recuperarPass`;
+  let data;
+  let error;
+  try {
+    const res = await axios.post(url);
+    data = res.data;
+  } catch (err: any) {
+    console.log("Axios Error on logOut", err);
+    error = err.message;
+  }
+  return { data, error };
+};
+
+export { authServices, signIn, logout, forgotPass };

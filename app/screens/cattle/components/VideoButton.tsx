@@ -12,7 +12,7 @@ const VideoButton = (props: Props) => {
   return (
     <Pressable style={styles.container} {...rest}>
       <Text>Añadir video</Text>
-      <Icon name="plus" />
+      <Icon name="Plus" size={32} color={COLORS.primary} />
     </Pressable>
   );
 };

@@ -6,7 +6,7 @@ import {
   Pressable,
   PressableProps,
 } from "react-native";
-import { ActivityIndicatorModal, Text } from "../../../components";
+import { ActivityIndicatorModal, IconButton, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
 type TaskProps = {
@@ -33,6 +33,8 @@ const TaskItem = (props: Props) => {
 
   let active = task.estado === "En progreso" ? true : false;
 
+  console.log(task.estado);
+
   const borderColor = active ? COLORS.secundary : COLORS.white2;
 
   return (
@@ -44,28 +46,41 @@ const TaskItem = (props: Props) => {
         <Text color={COLORS.primary}>{task.titulo}</Text>
       </View>
       <View style={{ flexDirection: "row" }}>
-        {active ? (
+        {task.estado === "Sin iniciar" && (
+          <IconButton
+            name="Start"
+            color={COLORS["gray-medium"]}
+            size={28}
+            onPress={() => handleStart(task.nid, task.titulo)}
+          />
+        )}
+        {task.estado === "Pausada" && (
+          <IconButton
+            name="Start"
+            color={COLORS["gray-medium"]}
+            size={28}
+            onPress={() => handleStart(task.nid, task.titulo)}
+          />
+        )}
+
+        {task.estado === "En progreso" && (
           <>
-            <Pressable onPress={() => handlePause(task.nid)}>
-              <Image
-                source={require("../../../../assets/icons/pausa.png")}
-                style={styles.icon}
-              />
-            </Pressable>
-            <Pressable onPress={() => handleFinish(task.nid)}>
-              <Image
-                source={require("../../../../assets/icons/check.png")}
-                style={styles.icon}
-              />
-            </Pressable>
-          </>
-        ) : (
-          <Pressable onPress={() => handleStart(task.nid, task.titulo)}>
-            <Image
-              source={require("../../../../assets/icons/play.png")}
-              style={styles.icon}
+            <IconButton
+              name="Pause"
+              size={28}
+              onPress={() => handlePause(task.nid)}
+              color={COLORS["gray-medium"]}
+              style={{ paddingHorizontal: SIZES.xxs }}
             />
-          </Pressable>
+            <IconButton
+              name="Check"
+              size={28}
+              onPress={() => handleFinish(task.nid)}
+            />
+          </>
+        )}
+        {task.estado === "Finalizada" && (
+          <IconButton name="Check" size={28} color={COLORS.black} />
         )}
       </View>
       <ActivityIndicatorModal loading={loading} />

@@ -15,21 +15,21 @@ const AnimalCard = ({ data }: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Icon name="caballox2" />
+        <Icon name="Horse" size={45} />
         <Text style={styles.counter}>{data.media_caballo}</Text>
         <Text color={COLORS.primary}>caballo</Text>
       </View>
       <View style={styles.card}>
-        <Icon name="vacax2" />
-        <Text style={styles.counter}>{data.media_total}</Text>
-        <Text color={COLORS.primary}>Media</Text>
+        <Icon name="Muleta" color={COLORS.primary} size={45} />
+        <Text style={styles.counter}>{data.media_muleta}</Text>
+        <Text color={COLORS.primary}>Muleta</Text>
       </View>
       <View style={{ ...styles.card, backgroundColor: COLORS.primary }}>
-        <Icon name="muletax2" />
+        <Icon name="Cow" color={COLORS.white2} size={45} />
         <Text style={{ ...styles.counter, color: COLORS.white2 }}>
-          {data.media_muleta}
+          {data.media_total}
         </Text>
-        <Text color={COLORS.white2}>Muleta</Text>
+        <Text color={COLORS.white2}>Media</Text>
       </View>
     </View>
   );

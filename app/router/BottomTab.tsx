@@ -18,7 +18,7 @@ export default function TabNavigator() {
         name="DashboardStack"
         component={DashboardNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="cow" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="Cow" color={color} />,
           tabBarLabel: "Ganadería",
         }}
       />
@@ -26,9 +26,7 @@ export default function TabNavigator() {
         name="TaskStack"
         component={TaskNavigator}
         options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="format-list-bulleted" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <TabBarIcon name="Task" color={color} />,
           tabBarLabel: "Tareas",
         }}
       />
