@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Pressable,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   cattleServices,
@@ -115,7 +121,6 @@ const Filter = ({ navigation }: Props) => {
         `https://torrealta.jumpintotech.es/rest/api/v1/animal/getBy?${filters}`
       )
       .then((response) => {
-        console.log(response.data);
         setData(response.data);
       })
       .catch((error) => {})
@@ -127,7 +132,10 @@ const Filter = ({ navigation }: Props) => {
   if (isLoading) return <LoadingScreen />;
 
   return (
-    <View style={{ ...styles.container, paddingBottom }}>
+    <KeyboardAvoidingView
+      style={{ ...styles.container, paddingBottom }}
+      behavior="padding"
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <Input
           placeholder="N°"
@@ -203,7 +211,7 @@ const Filter = ({ navigation }: Props) => {
         </Pressable>
       )}
       <Button title="Aplicar" onPress={handleSubmit} />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

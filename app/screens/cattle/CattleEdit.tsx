@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Button,
@@ -94,7 +99,6 @@ const CattleEdit = ({ navigation, route }: any) => {
       });
     }
     if (resp.error) {
-      console.log(resp.error);
       setIsLoading(false);
       setIsVisible(true);
       setError("Error al actualizar este animal");
@@ -153,7 +157,10 @@ const CattleEdit = ({ navigation, route }: any) => {
   }
 
   return (
-    <View style={{ ...styles.container, paddingBottom: bottom }}>
+    <KeyboardAvoidingView
+      style={{ ...styles.container, paddingBottom: bottom }}
+      behavior="padding"
+    >
       <ScrollView contentInset={{ bottom }}>
         <View style={styles.inputNcontainer}>
           <Input
@@ -298,7 +305,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             style={styles.inputN}
             value={values.fecha_baja}
             onChangeDate={(item) => {
-              console.log(item);
               setValues({ ...values, fecha_baja: item.value });
             }}
             calendar
@@ -577,7 +583,7 @@ const CattleEdit = ({ navigation, route }: any) => {
           message: error,
         }}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

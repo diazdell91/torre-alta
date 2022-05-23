@@ -46,12 +46,12 @@ const logout = async () => {
   return { data, error };
 };
 
-const forgotPass = async () => {
+const forgotPass = async (email: string) => {
   const url = `${BASE_URL}user/recuperarPass`;
   let data;
   let error;
   try {
-    const res = await axios.post(url);
+    const res = await axios.post(url, { email });
     data = res.data;
   } catch (err: any) {
     console.log("Axios Error on logOut", err);
@@ -60,4 +60,6 @@ const forgotPass = async () => {
   return { data, error };
 };
 
-export { authServices, signIn, logout, forgotPass };
+const VALID_EMAIL = `user/isvalidEmail?email=`;
+
+export { authServices, signIn, logout, forgotPass, VALID_EMAIL };

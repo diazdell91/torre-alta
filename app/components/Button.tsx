@@ -45,7 +45,7 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    width: Layout.window.width * 0.95,
+    width: "95%",
     height: SIZES.buttonHeight,
     marginVertical: SIZES.xs,
     justifyContent: "center",

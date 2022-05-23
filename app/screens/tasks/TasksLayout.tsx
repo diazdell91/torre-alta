@@ -20,12 +20,13 @@ import Error from "../error/Error";
 import { useAuth } from "../../context/auth/auth.provider";
 import { ActivityIndicatorModal } from "../../components";
 
-type Props = {};
+type Props = any;
 
 const tabs = ["Hoy", "Generales", "Sin terminar"];
 
-const TasksLayout = (props: Props) => {
+const TasksLayout = ({ route }: Props) => {
   const { user } = useAuth();
+  const refresh = route.params?.refresh;
   //handle modals
   const [isModalVisible, setModalVisible] = useState(false);
   //handle tabs
@@ -58,7 +59,6 @@ const TasksLayout = (props: Props) => {
     Promise.all(requestTasks)
       .then((response) => {
         response.map((res) => {
-          // console.log(res.status);
           if (res.status === 200) {
             switch (res.config.url) {
               case `${GET_TASK_TODAY}${user?.email}`:
@@ -82,7 +82,7 @@ const TasksLayout = (props: Props) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [loadingActivity]);
+  }, [loadingActivity, refresh]);
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -90,7 +90,6 @@ const TasksLayout = (props: Props) => {
 
   const handleStart = async (id: string, title: string) => {
     setLoadingActivity(true);
-    console.log("start task", id);
     startTask({
       id,
       nombre_tiempo: title,
@@ -106,7 +105,6 @@ const TasksLayout = (props: Props) => {
 
   const handleFinish = async (id: string) => {
     setLoadingActivity(true);
-    console.log("end task", id);
     endTask({
       id,
     })
@@ -121,7 +119,6 @@ const TasksLayout = (props: Props) => {
 
   const handlePause = async (id: string) => {
     setLoadingActivity(true);
-    console.log("pause task", id);
     pauseTask({
       id: id,
     })
@@ -137,12 +134,10 @@ const TasksLayout = (props: Props) => {
   const handleShowInfo = async (id: string) => {
     handleVisible(true);
     setLoadingInfo(true);
-    console.log("show info", id);
     const url = `${GET_TASK_DESCRIPTION}${id}`;
     taskServices
       .get(url)
       .then((res) => {
-        console.log(res.data);
         setTaskDetails(res.data[0]);
       })
       .catch((err) => {

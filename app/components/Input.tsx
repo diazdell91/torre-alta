@@ -26,6 +26,9 @@ const Input = (props: Props) => {
         style={[styles.inputContainer, style]}
         {...rest}
         placeholderTextColor={COLORS["gray-dark"]}
+        autoCorrect={false}
+        autoCapitalize="none"
+        textContentType="none"
       />
       {iconRight && (
         <View style={styles.iconLeft}>

@@ -20,7 +20,10 @@ const useAuthActions = (initialAuth = INITIAL_STATE) => {
       //Getting session from localStorage
       const user = await getUser();
       const valid = user && user.uid;
-      if (!valid) signOut();
+
+      if (!valid) {
+        signOut();
+      }
       dispatch({ type: "RESTORE_TOKEN", payload: user });
     };
     bootstrapAsync();
@@ -39,7 +42,7 @@ const useAuthActions = (initialAuth = INITIAL_STATE) => {
   async function signOut() {
     await clearStore();
     dispatch({ type: "SIGN_OUT", payload: {} });
-    await logout();
+    // logout();
   }
 
   return {

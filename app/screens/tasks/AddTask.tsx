@@ -84,13 +84,14 @@ const AddTask = ({ navigation }: Props) => {
     });
 
     if (resp.data) {
-      console.log(resp.data);
       const { message } = resp.data;
 
       setIsLoading(false);
       if (message === "Tarea creada con éxito") {
         clear();
-        navigation.navigate("Tasks");
+        navigation.navigate("Tasks", {
+          refresh: true,
+        });
         return;
       } else {
         setError(message);
@@ -98,7 +99,6 @@ const AddTask = ({ navigation }: Props) => {
       }
     }
     if (resp.error) {
-      console.log(resp.error);
       clear();
       setIsLoading(false);
       setIsVisible(true);
@@ -108,8 +108,6 @@ const AddTask = ({ navigation }: Props) => {
 
   if (isLoading) return <LoadingScreen />;
   if (error) return <Error message={error} />;
-
-  console.log(values);
 
   const disabled =
     values.titulo === "" || values.descripcion === "" || values.fecha === "";

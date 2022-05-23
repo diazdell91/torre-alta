@@ -25,7 +25,7 @@ const TaskInfo = (props: Props) => {
       isVisible={isVisible}
       onBackdropPress={() => handleVisible(false)}
       customBackdrop={
-        <View style={{ flex: 1, backgroundColor: COLORS.backDrop }} />
+        <View style={{ flex: 1, backgroundColor: COLORS.primary }} />
       }
     >
       {loading ? (
@@ -59,10 +59,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: SIZES.xs,
     padding: SIZES.m,
+    paddingTop: SIZES.xl,
   },
   wrapperDesc: {
     marginTop: SIZES.m,
     textAlign: "center",
-    marginBottom: SIZES.m,
+    marginBottom: SIZES.xxs,
   },
 });

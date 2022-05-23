@@ -66,7 +66,6 @@ const uploadVideo = async (newVideo: uploadVideo) => {
         percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
-        //console.log(percentCompleted);
       },
     });
     data = res.data;

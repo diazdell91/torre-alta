@@ -22,6 +22,10 @@ const Login = ({ navigation }: Props) => {
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
+  //regex email
+  const regexEmail =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
   const { login } = useAuth();
 
   const handdleLogin = async () => {
@@ -83,8 +87,9 @@ const Login = ({ navigation }: Props) => {
           secureTextEntry
         />
         <Button
+          disabled={email === "" || pass === "" || !regexEmail.test(email)}
           loading={isLoading}
-          title="Iniciar Sesión"
+          title="Acceder"
           onPress={handdleLogin}
         />
         <Button
@@ -128,5 +133,6 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     justifyContent: "center",
+    width: "80%",
   },
 });

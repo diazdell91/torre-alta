@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "torre-alta",
+    "name": "Torre alta",
     "slug": "torre-alta",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.expo.torre-alta"
@@ -26,7 +28,10 @@
         "backgroundColor": "#ffffff"
       }
     },
-    "description": "",
-    "plugins": ["expo-image-picker"]
+    "description": "Aplicación para gestionar ganadería y asignar tareas",
+    "plugins": [
+      "expo-image-picker"
+    ],
+    "githubUrl": "https://github.com/diazdell91/torre-alta.git"
   }
 }
