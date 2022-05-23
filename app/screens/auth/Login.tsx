@@ -4,7 +4,6 @@ import {
   View,
   ImageBackground,
   Image,
-  ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

@@ -17,7 +17,7 @@ const CattleGeneral = ({ data }: Props) => {
   const caballo = animal?.caballo;
   const muleta = animal?.muleta;
   const details = animal?.detalles;
-  const observations = animal?.observations;
+  const observations = animal?.observaciones_campo;
   const media = {
     media_caballo: animal?.media_caballo,
     media_muleta: animal?.media_muleta,

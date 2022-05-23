@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import TaskItem from "./components/TaskItem";
-import TaskInfo from "./components/TaskInfo";
-import TaskPanel from "./components/TaskPanel";
 import { Text } from "../../components";
 
 type Props = {
@@ -10,6 +8,7 @@ type Props = {
   handleStart: (id: string, title: string) => void;
   handleFinish: (id: string) => void;
   handlePause: (id: string) => void;
+  handleShowInfo: (id: string) => void;
 };
 
 const TasksPendings = ({
@@ -17,9 +16,8 @@ const TasksPendings = ({
   handleStart,
   handlePause,
   handleFinish,
+  handleShowInfo,
 }: Props) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-
   if (data?.message) {
     const { message } = data;
     return (
@@ -36,21 +34,12 @@ const TasksPendings = ({
           <TaskItem
             key={i}
             task={task}
-            onPressInfo={() => {
-              setModalVisible(true);
-            }}
             handleStart={handleStart}
             handleFinish={handleFinish}
             handlePause={handlePause}
+            handleShowInfo={handleShowInfo}
           />
         ))}
-
-        <TaskPanel />
-        {/* <TaskInfo
-          isVisible={isModalVisible}
-          handleVisible={handleVisible}
-          task={task}
-        /> */}
       </View>
     );
   }

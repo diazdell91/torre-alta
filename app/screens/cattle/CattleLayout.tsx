@@ -17,7 +17,7 @@ import CattleVideo from "./CattleVideo";
 
 type Props = any;
 
-const tabs = ["General", "Hijos", "Árbol", "Video"];
+const tabs = ["General", "Hijos", "Video"];
 
 const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
@@ -37,7 +37,6 @@ const CattleLayout = ({ navigation, route }: Props) => {
       `${GET_CATTLE_BY_ID}${id}`,
       `${GET_CATTLE_CHILD_BY_ID}${id}`,
       `${GET_VIDEO}${id}`,
-      `${GET_CATTLE_TREE}${id}`,
     ];
 
     let requestCattleDetail = urls.map((url) => cattleServices.get(url));
@@ -54,9 +53,9 @@ const CattleLayout = ({ navigation, route }: Props) => {
               case `${GET_CATTLE_CHILD_BY_ID}${id}`:
                 setCattleChild(res.data);
                 break;
-              case `${GET_CATTLE_TREE}${id}`:
-                setCattleTree(res.data);
-                break;
+              // case `${GET_CATTLE_TREE}${id}`:
+              //   setCattleTree(res.data);
+              //   break;
               case `${GET_VIDEO}${id}`:
                 setVideos(res.data);
                 break;
@@ -101,7 +100,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
       {selectedTab === "Hijos" && cattleChild && (
         <CattleChild data={cattleChild} />
       )}
-      {selectedTab === "Árbol" && catteTree && <CattleTree data={catteTree} />}
+      {/* {selectedTab === "Árbol" && catteTree && <CattleTree data={catteTree} />} */}
       {selectedTab === "Video" && videos && (
         <CattleVideo id={id} data={videos} />
       )}

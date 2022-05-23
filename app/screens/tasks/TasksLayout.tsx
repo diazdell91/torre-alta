@@ -4,6 +4,7 @@ import TaskInfo from "./components/TaskInfo";
 import TopTabs from "../../components/TopTabs";
 import {
   endTask,
+  GET_TASK_DESCRIPTION,
   GET_TASK_GENERAL,
   GET_TASK_PENDING,
   GET_TASK_TODAY,
@@ -38,6 +39,8 @@ const TasksLayout = (props: Props) => {
   const [tasksToday, setTasksToday] = useState(null);
   //handle activity indicator
   const [loadingActivity, setLoadingActivity] = useState(false);
+  const [loadingInfo, setLoadingInfo] = useState(false);
+  const [taskDetails, setTaskDetails] = useState(null);
 
   const handleVisible = (visible: boolean) => {
     setModalVisible(visible);
@@ -131,6 +134,25 @@ const TasksLayout = (props: Props) => {
       });
   };
 
+  const handleShowInfo = async (id: string) => {
+    handleVisible(true);
+    setLoadingInfo(true);
+    console.log("show info", id);
+    const url = `${GET_TASK_DESCRIPTION}${id}`;
+    taskServices
+      .get(url)
+      .then((res) => {
+        console.log(res.data);
+        setTaskDetails(res.data[0]);
+      })
+      .catch((err) => {
+        setError(err.message);
+      })
+      .finally(() => {
+        setLoadingInfo(false);
+      });
+  };
+
   if (loading) return <LoadingScreen />;
   if (error) return <Error message={error} />;
 
@@ -148,6 +170,7 @@ const TasksLayout = (props: Props) => {
             handleStart={handleStart}
             handleFinish={handleFinish}
             handlePause={handlePause}
+            handleShowInfo={handleShowInfo}
           />
         )}
         {selectedTab === "Generales" && tasksGeneral && (
@@ -156,6 +179,7 @@ const TasksLayout = (props: Props) => {
             handleStart={handleStart}
             handleFinish={handleFinish}
             handlePause={handlePause}
+            handleShowInfo={handleShowInfo}
           />
         )}
         {selectedTab === "Sin terminar" && tasksPending && (
@@ -164,10 +188,17 @@ const TasksLayout = (props: Props) => {
             handleStart={handleStart}
             handleFinish={handleFinish}
             handlePause={handlePause}
+            handleShowInfo={handleShowInfo}
           />
         )}
       </ScrollView>
       <ActivityIndicatorModal loading={loadingActivity} />
+      <TaskInfo
+        loading={loadingInfo}
+        isVisible={isModalVisible}
+        handleVisible={handleVisible}
+        task={taskDetails ? taskDetails : undefined}
+      />
     </View>
   );
 };

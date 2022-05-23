@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Pressable, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "../../../theme/Theme";
-import { Text } from "../../../components";
+import { IconButton, Text } from "../../../components";
 import Layout from "../../../theme/Layout";
 
 type Props = {};
@@ -13,18 +13,8 @@ const TaskPanel = (props: Props) => {
         <Text>Reparar tractor</Text>
       </View>
       <View style={{ flexDirection: "row" }}>
-        <Pressable>
-          <Image
-            source={require("../../../../assets/icons/pausa.png")}
-            style={styles.icon}
-          />
-        </Pressable>
-        <Pressable>
-          <Image
-            source={require("../../../../assets/icons/check.png")}
-            style={styles.icon}
-          />
-        </Pressable>
+        <IconButton name="Pause" />
+        <IconButton name="Check" />
       </View>
     </View>
   );
@@ -44,9 +34,5 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: SIZES.xs,
     marginVertical: SIZES.xs,
-  },
-  icon: {
-    height: 32,
-    width: 32,
   },
 });

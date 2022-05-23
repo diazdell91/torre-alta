@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
-import { Button, Text } from "../../../components";
+import { Button, Loading, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
 type TaskProps = {
-  title: string;
-  active: boolean;
-  description: string;
+  titulo: string;
+  active?: boolean;
+  descripcion: string;
 };
 
 type Props = {
   isVisible: boolean;
+  loading: boolean;
   handleVisible: (visible: boolean) => void;
-  task: TaskProps;
+  task?: TaskProps;
 };
 
 const TaskInfo = (props: Props) => {
-  const { isVisible = false, handleVisible, task } = props;
+  const { isVisible, loading, handleVisible, task } = props;
 
   return (
     <Modal
@@ -27,20 +28,24 @@ const TaskInfo = (props: Props) => {
         <View style={{ flex: 1, backgroundColor: COLORS.backDrop }} />
       }
     >
-      <View style={styles.container}>
-        <Text h1 color={COLORS.primary}>
-          {task.title}
-        </Text>
-        <View style={styles.wrapperDesc}>
-          <Text h3>{task.description}</Text>
+      {loading ? (
+        <Loading color={COLORS.primary} />
+      ) : (
+        <View style={styles.container}>
+          <Text h1 color={COLORS.primary}>
+            {task?.titulo}
+          </Text>
+          <View style={styles.wrapperDesc}>
+            <Text h3>{task?.descripcion}</Text>
+          </View>
+          <Button
+            title="OK"
+            onPress={() => handleVisible(false)}
+            style={{ backgroundColor: "transparent" }}
+            fontStyle={{ color: COLORS.primary, fontSize: SIZES.h2 }}
+          />
         </View>
-        <Button
-          title="OK"
-          onPress={() => handleVisible(false)}
-          style={{ backgroundColor: "transparent" }}
-          fontStyle={{ color: COLORS.primary, fontSize: SIZES.h2 }}
-        />
-      </View>
+      )}
     </Modal>
   );
 };

@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { IconButton } from "../../components";
+import { Icon, IconButton } from "../../components";
+import { Logo } from "../../components/icons";
 import Dashboard from "../../screens/dashboard/Dashboard";
 import { COLORS, SIZES } from "../../theme/Theme";
-import IconLogo from "../components/IconLogo";
 
 const DashboardStack = createNativeStackNavigator();
 
@@ -30,7 +30,7 @@ function DashboardNavigator() {
               }}
             />
           ),
-          headerRight: () => <IconLogo />,
+          headerRight: () => <Logo />,
         })}
       />
     </DashboardStack.Navigator>

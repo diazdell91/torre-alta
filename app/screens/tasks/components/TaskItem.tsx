@@ -1,12 +1,6 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  Pressable,
-  PressableProps,
-} from "react-native";
-import { ActivityIndicatorModal, IconButton, Text } from "../../../components";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { IconButton, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
 type TaskProps = {
@@ -19,29 +13,27 @@ type TaskProps = {
 
 type Props = {
   task: TaskProps;
-  onPressInfo: PressableProps["onPress"];
+  handleShowInfo: (id: string) => void;
   handleStart: (id: string, title: string) => void;
   handleFinish: (id: string) => void;
   handlePause: (id: string) => void;
 };
 
 const TaskItem = (props: Props) => {
-  const { task, onPressInfo, handleStart, handlePause, handleFinish } = props;
-  const [loading, setLoadig] = useState(false);
-  const [error, setError] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
+  const { task, handleShowInfo, handleStart, handlePause, handleFinish } =
+    props;
 
   let active = task.estado === "En progreso" ? true : false;
-
-  console.log(task.estado);
 
   const borderColor = active ? COLORS.secundary : COLORS.white2;
 
   return (
     <View style={{ ...styles.container, borderColor }}>
-      <Pressable onPress={onPressInfo}>
-        <Image source={require("../../../../assets/icons/infoblack.png")} />
-      </Pressable>
+      <IconButton
+        onPress={() => handleShowInfo(task.nid)}
+        name="Info"
+        color={COLORS.black}
+      />
       <View style={{ flex: 1, marginStart: SIZES.xs }}>
         <Text color={COLORS.primary}>{task.titulo}</Text>
       </View>
@@ -83,7 +75,6 @@ const TaskItem = (props: Props) => {
           <IconButton name="Check" size={28} color={COLORS.black} />
         )}
       </View>
-      <ActivityIndicatorModal loading={loading} />
     </View>
   );
 };
@@ -101,11 +92,5 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white2,
     borderWidth: 2,
     borderRadius: SIZES.xs,
-  },
-  icon: {
-    height: 32,
-    width: 32,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

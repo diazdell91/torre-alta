@@ -17,6 +17,7 @@ import Plus from "./Plus";
 import Start from "./Start";
 import Task from "./Task";
 import Xls from "./Xls";
+import Logo from "./Logo";
 
 export {
   Calendar,
@@ -38,6 +39,7 @@ export {
   Start,
   Task,
   Xls,
+  Logo,
 };
 
 export type IconType =
@@ -59,4 +61,5 @@ export type IconType =
   | "Plus"
   | "Start"
   | "Task"
-  | "Xls";
+  | "Xls"
+  | "Logo";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
 import { COLORS, SIZES } from "../theme/Theme";
@@ -47,13 +47,15 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: SIZES.xl,
     backgroundColor: COLORS.white2,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: SIZES.m,
+    padding: SIZES.m,
   },
   wrapperDesc: {
     marginTop: SIZES.m,
     textAlign: "center",
-    marginBottom: SIZES.m,
   },
 });

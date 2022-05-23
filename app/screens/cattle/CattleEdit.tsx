@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Button,
-  Icon,
   IconButton,
   Input,
   InputSelect,
@@ -15,6 +14,7 @@ import {
   SELECT_BULLF,
   SELECT_BULLF_TROPHY,
   SELECT_BULL_TROPHY,
+  SELECT_DEST,
   SELECT_EXERCISE,
   SELECT_FEED,
   SELECT_HAIR,
@@ -39,6 +39,7 @@ interface SelectsParams {
   bullfTrophy: Array<any>;
   exercise: Array<any>;
   feed: Array<any>;
+  dest: Array<any>;
 }
 
 const CattleEdit = ({ navigation, route }: any) => {
@@ -61,6 +62,7 @@ const CattleEdit = ({ navigation, route }: any) => {
     bullfTrophy: [],
     exercise: [],
     feed: [],
+    dest: [],
   });
 
   navigation.setOptions({ headerRight: () => <IconButton name="Filter" /> });
@@ -111,6 +113,7 @@ const CattleEdit = ({ navigation, route }: any) => {
         SELECT_BULLF_TROPHY,
         SELECT_EXERCISE,
         SELECT_FEED,
+        SELECT_DEST,
       ];
       let requestSelects = urls.map((url) => cattleServices.get(url));
       Promise.all(requestSelects)
@@ -123,6 +126,7 @@ const CattleEdit = ({ navigation, route }: any) => {
           const bullfTrophy = objToArray(resp[5].data as any);
           const exercise = objToArray(resp[6].data as any);
           const feed = objToArray(resp[7].data as any);
+          const dest = objToArray(resp[8].data as any);
 
           setSelects({
             sex,
@@ -133,6 +137,7 @@ const CattleEdit = ({ navigation, route }: any) => {
             bullfTrophy,
             exercise,
             feed,
+            dest,
           });
         })
         .finally(() => {
@@ -232,32 +237,54 @@ const CattleEdit = ({ navigation, route }: any) => {
           )}
           {customTorero ? (
             <IconButton
-              name="Plus"
+              name="Task"
               style={{ marginEnd: SIZES.m }}
               onPress={() => setCustomTorero(!customTorero)}
             />
           ) : (
             <IconButton
-              name="Info"
+              name="Plus"
               style={{ marginEnd: SIZES.m }}
               onPress={() => setCustomTorero(!customTorero)}
             />
           )}
         </View>
         <View style={styles.inputRowIcon}>
-          <InputDropDown
-            data={selects.place}
-            placeholder="Lugar"
-            onChange={(value) => {
-              setValues({ ...values, lugar: value });
-            }}
-          />
-          <IconButton name="Plus" style={{ marginEnd: SIZES.m }} />
+          {/*  */}
+          {customLugar ? (
+            <View style={{ flex: 1, alignItems: "center", width: "auto" }}>
+              <Input
+                placeholder="Lugar"
+                onChangeText={(text) => handleChange("lugar", text)}
+              />
+            </View>
+          ) : (
+            <InputDropDown
+              data={selects.place}
+              placeholder="Lugar"
+              onChange={(value) => {
+                handleChange("lugar", value);
+              }}
+            />
+          )}
+          {customLugar ? (
+            <IconButton
+              name="Task"
+              style={{ marginEnd: SIZES.m }}
+              onPress={() => setCustomLugar(!customLugar)}
+            />
+          ) : (
+            <IconButton
+              name="Plus"
+              style={{ marginEnd: SIZES.m }}
+              onPress={() => setCustomLugar(!customLugar)}
+            />
+          )}
+          {/*  */}
         </View>
         <View style={styles.inputNcontainer}>
           <InputSelect
             placeholder="F.Alta"
-            iconRight={"calendar"}
             style={styles.inputN}
             value={values.fecha_alta}
             onChangeDate={(item) => {
@@ -268,7 +295,6 @@ const CattleEdit = ({ navigation, route }: any) => {
 
           <InputSelect
             placeholder="F.Baja"
-            iconRight={"calendar"}
             style={styles.inputN}
             value={values.fecha_baja}
             onChangeDate={(item) => {
@@ -278,9 +304,13 @@ const CattleEdit = ({ navigation, route }: any) => {
             calendar
           />
         </View>
-        <Input
+
+        <InputDropDown
+          data={selects.dest}
           placeholder="Destino"
-          onChangeText={(text) => handleChange("destino", text)}
+          onChange={(value) => {
+            setValues({ ...values, destino: value });
+          }}
         />
         <Input
           placeholder="Crotal"

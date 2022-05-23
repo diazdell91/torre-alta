@@ -9,10 +9,11 @@ import {
 import React, { useState } from "react";
 import { COLORS, SIZES } from "../theme/Theme";
 import Icon from "./Icon";
-import { IconType } from "../constants/Icons";
+
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
 import Text from "./Text";
+import { IconType } from "./icons";
 
 type InputProps = {
   style?: StyleProp<ViewStyle>;
@@ -65,7 +66,7 @@ const Input = (props: Props) => {
 
       {calendar && (
         <View style={styles.iconLeft}>
-          <Icon name="calendar" />
+          <Icon name="Calendar" />
         </View>
       )}
 
