@@ -17,7 +17,6 @@ function DashboardNavigator() {
         component={Dashboard}
         options={({ navigation }) => ({
           headerShown: true,
-          //headerTitle: "Torrealta(7)",
           headerTitleAlign: "center",
           headerTitleStyle: {
             color: COLORS.primary,

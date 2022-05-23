@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button, Input, InputSelect, Notifications } from "../../components";
+import {
+  Button,
+  Icon,
+  Input,
+  InputSelect,
+  Notifications,
+} from "../../components";
 import { COLORS, SIZES } from "../../theme/Theme";
 import {
   cattleServices,
@@ -23,6 +29,7 @@ import CollapseCardEdit from "./components/CollapseCardEdit";
 import objToArray from "../../helper/objToArray";
 import InputDropDown from "../../components/InputDropDown";
 import IconFilter from "../../router/components/IconFilter";
+import IconBack from "../../router/components/IconBack";
 
 interface SelectsParams {
   sex: Array<any>;
@@ -42,6 +49,8 @@ const CattleEdit = ({ navigation, route }: any) => {
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [values, setValues] = useState(defaultValues);
+  const [customTorero, setCustomTorero] = useState(false);
+  const [customLugar, setCustomLugar] = useState(false);
 
   //selects
   const [selects, setSelects] = useState<SelectsParams>({
@@ -178,17 +187,15 @@ const CattleEdit = ({ navigation, route }: any) => {
         <InputDropDown
           data={selects.sex}
           placeholder="Sexo"
-          value={values.sexo}
-          onChange={(item) => {
-            setValues({ ...values, sexo: item.value });
+          onChange={(value) => {
+            setValues({ ...values, sexo: value });
           }}
         />
         <InputDropDown
           data={selects.hair}
           placeholder="Pelo"
-          value={values.pelo}
-          onChange={(item) => {
-            setValues({ ...values, pelo: item.value });
+          onChange={(value) => {
+            setValues({ ...values, pelo: value });
           }}
         />
         <Input
@@ -203,29 +210,46 @@ const CattleEdit = ({ navigation, route }: any) => {
           placeholder="Fecha de lidea"
           value={values.fecha_lidia}
           onChangeDate={(item) => {
-            console.log(item);
             setValues({ ...values, fecha_lidia: item.value });
           }}
           calendar
         />
         <View style={styles.inputRowIcon}>
-          <InputDropDown
-            data={selects.bullf}
-            placeholder="Torero"
-            value={values.torero}
-            onChange={(item) => {
-              setValues({ ...values, torero: item.value });
-            }}
-          />
-          <IconAdd style={{ marginEnd: SIZES.m }} />
+          {customTorero ? (
+            <View style={{ flex: 1, alignItems: "center", width: "auto" }}>
+              <Input
+                placeholder="Torero"
+                onChangeText={(text) => handleChange("torero", text)}
+              />
+            </View>
+          ) : (
+            <InputDropDown
+              data={selects.bullf}
+              placeholder="Torero"
+              onChange={(value) => {
+                handleChange("torero", value);
+              }}
+            />
+          )}
+          {customTorero ? (
+            <IconAdd
+              style={{ marginEnd: SIZES.m }}
+              onPress={() => setCustomTorero(!customTorero)}
+            />
+          ) : (
+            <Icon
+              name="info"
+              style={{ marginEnd: SIZES.m }}
+              onPress={() => setCustomTorero(!customTorero)}
+            />
+          )}
         </View>
         <View style={styles.inputRowIcon}>
           <InputDropDown
             data={selects.place}
             placeholder="Lugar"
-            value={values.lugar}
-            onChange={(item) => {
-              setValues({ ...values, lugar: item.value });
+            onChange={(value) => {
+              setValues({ ...values, lugar: value });
             }}
           />
           <IconAdd style={{ marginEnd: SIZES.m }} />
@@ -237,7 +261,6 @@ const CattleEdit = ({ navigation, route }: any) => {
             style={styles.inputN}
             value={values.fecha_alta}
             onChangeDate={(item) => {
-              console.log(item);
               setValues({ ...values, fecha_alta: item.value });
             }}
             calendar
@@ -262,6 +285,7 @@ const CattleEdit = ({ navigation, route }: any) => {
         <Input
           placeholder="Crotal"
           onChangeText={(text) => handleChange("crotal", text)}
+          keyboardType="numeric"
         />
         <CollapseCardEdit title="Caballo">
           <Input
@@ -279,11 +303,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Distancia"
               onChangeText={(text) => handleChange("distancia_caballo", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Fijeza"
               onChangeText={(text) => handleChange("fijeza_caballo", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -291,11 +317,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Prontitud"
               onChangeText={(text) => handleChange("prontitud_caballo", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Galope"
               onChangeText={(text) => handleChange("galope_caballo", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -303,11 +331,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Humilla"
               onChangeText={(text) => handleChange("humilla_caballo", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Empuja"
               onChangeText={(text) => handleChange("empuja_caballo", text)}
+              keyboardType="numeric"
             />
           </View>
         </CollapseCardEdit>
@@ -327,11 +357,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Bravura"
               onChangeText={(text) => handleChange("bravura_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Fijeza"
               onChangeText={(text) => handleChange("fijeza_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -339,11 +371,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Empleo"
               onChangeText={(text) => handleChange("empleo_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Repetir"
               onChangeText={(text) => handleChange("repetir_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -351,11 +385,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Querencia"
               onChangeText={(text) => handleChange("querencia_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Prontitud"
               onChangeText={(text) => handleChange("prontitud_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -363,11 +399,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Desarrollo"
               onChangeText={(text) => handleChange("desarrollo_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Nobleza"
               onChangeText={(text) => handleChange("nobleza_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -375,11 +413,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Humilla"
               onChangeText={(text) => handleChange("humilla_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Rectitud"
               onChangeText={(text) => handleChange("rectitud_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -387,11 +427,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Recorrido"
               onChangeText={(text) => handleChange("recorrido_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Movilidad"
               onChangeText={(text) => handleChange("movilidad_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -399,11 +441,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Clase"
               onChangeText={(text) => handleChange("clase_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Fuerza"
               onChangeText={(text) => handleChange("fuerza_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputNcontainer}>
@@ -411,11 +455,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Empuja"
               onChangeText={(text) => handleChange("empuja_muleta", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Fuerza"
               onChangeText={(text) => handleChange("fuerza_muleta", text)}
+              keyboardType="numeric"
             />
           </View>
         </CollapseCardEdit>
@@ -434,34 +480,30 @@ const CattleEdit = ({ navigation, route }: any) => {
           <InputDropDown
             data={selects.bullTrophy}
             placeholder="Trofeo Toro"
-            value={values.lugar}
-            onChange={(item) => {
-              setValues({ ...values, trofeo_toro_detalles: item.value });
+            onChange={(value) => {
+              setValues({ ...values, trofeo_toro_detalles: value });
             }}
           />
           <InputDropDown
             data={selects.bullfTrophy}
             placeholder="Trofeo Torero"
-            value={values.lugar}
-            onChange={(item) => {
-              setValues({ ...values, trofeo_torero_detalles: item.value });
+            onChange={(value) => {
+              setValues({ ...values, trofeo_torero_detalles: value });
             }}
           />
           <InputDropDown
             data={selects.exercise}
             placeholder="Ejercicio Físico"
-            value={values.lugar}
-            onChange={(item) => {
-              setValues({ ...values, ejercicio_fisico_detalles: item.value });
+            onChange={(value) => {
+              setValues({ ...values, ejercicio_fisico_detalles: value });
             }}
           />
 
           <InputDropDown
             data={selects.feed}
-            placeholder="Ejercicio Físico"
-            value={values.lugar}
-            onChange={(item) => {
-              setValues({ ...values, pienso_detalles: item.value });
+            placeholder="Pienso"
+            onChange={(value) => {
+              setValues({ ...values, pienso_detalles: value });
             }}
           />
           <View style={styles.inputNcontainer}>
@@ -469,11 +511,13 @@ const CattleEdit = ({ navigation, route }: any) => {
               flex
               placeholder="Nota"
               onChangeText={(text) => handleChange("nota_detalles", text)}
+              keyboardType="numeric"
             />
             <Input
               flex
               placeholder="Peso"
               onChangeText={(text) => handleChange("peso_detalles", text)}
+              keyboardType="numeric"
             />
           </View>
         </CollapseCardEdit>

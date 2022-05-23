@@ -3,23 +3,25 @@ import { StyleSheet, View } from "react-native";
 import TaskItem from "./components/TaskItem";
 import TaskInfo from "./components/TaskInfo";
 import TaskPanel from "./components/TaskPanel";
-import LoadingScreen from "../loading/LoadingScreen";
-import { COLORS } from "../../theme/Theme";
+
 import { Text } from "../../components";
 
 type Props = {
   data: any;
-  loading: boolean;
-  error: string;
+  handleStart: (id: string, title: string) => void;
+  handleFinish: (id: string) => void;
+  handlePause: (id: string) => void;
 };
 
-const TasksGeneral = ({ data, loading, error }: Props) => {
+const TasksGeneral = ({
+  data,
+  handleStart,
+  handlePause,
+  handleFinish,
+}: Props) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
-  if (loading) {
-    return <LoadingScreen color={COLORS.primary} />;
-  }
-  if (data?.message && !loading && !error) {
+  if (data?.message) {
     const { message } = data;
     return (
       <View style={styles.containerMessage}>
@@ -28,9 +30,7 @@ const TasksGeneral = ({ data, loading, error }: Props) => {
     );
   }
 
-  console.log(data);
-
-  if (data.length >= 0 && !loading && !error) {
+  if (data.length >= 0) {
     return (
       <View style={styles.container}>
         {data.map((task: any, i: number) => (
@@ -40,6 +40,9 @@ const TasksGeneral = ({ data, loading, error }: Props) => {
             onPressInfo={() => {
               setModalVisible(true);
             }}
+            handleStart={handleStart}
+            handleFinish={handleFinish}
+            handlePause={handlePause}
           />
         ))}
 

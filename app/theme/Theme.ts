@@ -33,6 +33,7 @@ export interface ITheme {
     background: string;
     white: string;
     white2: string;
+    black: string;
     "gray-light": string;
     "gray-medium": string;
     "gray-dark": string;
@@ -86,6 +87,7 @@ export const COLORS = {
   background: "#d8d8d8",
   white: "#f7f7f7",
   white2: "#ffffff",
+  black: "rgb( 33, 32, 37)",
   "gray-light": "#f3f3f3",
   "gray-medium": "#323137",
   "gray-dark": "#21202580",

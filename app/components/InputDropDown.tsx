@@ -1,93 +1,70 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { COLORS, SIZES } from "../theme/Theme";
-
-const DATA = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
+import RNPickerSelect from "react-native-picker-select";
+import Icon from "./Icon";
 
 interface Props {
-  data?: { label: string; value: string }[];
+  data: { label: string; value: string }[];
   placeholder?: string;
-  value: string;
   onChange: (item: any) => void;
 }
 
-const InputDropDown = (props: Props) => {
-  const { data = DATA, placeholder, value, onChange } = props;
-
-  const renderItem = (item: any) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-      </View>
-    );
-  };
+const InputDropDown = (props: Props): JSX.Element => {
+  const { data, placeholder, onChange } = props;
 
   return (
-    <Dropdown
-      style={styles.dropdown}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={styles.selectedTextStyle}
-      iconStyle={styles.iconStyle}
-      iconColor={COLORS.primary}
-      data={data}
-      maxHeight={300}
-      labelField="label"
-      valueField="value"
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      renderItem={renderItem}
-    />
+    <View style={styles.container}>
+      <RNPickerSelect
+        placeholder={{ label: `Selecciona ${placeholder}`, value: null }}
+        Icon={() => (
+          <View style={styles.iconRight}>
+            <Icon name="flechaAbajo" />
+          </View>
+        )}
+        onValueChange={onChange}
+        items={data}
+        style={{
+          inputIOS: {
+            height: SIZES.inputHeight,
+            backgroundColor: COLORS.white2,
+            borderRadius: SIZES.inputRadius,
+            paddingLeft: SIZES.m,
+            fontSize: 16,
+            fontFamily: "Montserrat-SemiBold",
+            color: COLORS["gray-medium"],
+          },
+          inputAndroid: {
+            height: SIZES.inputHeight,
+            backgroundColor: COLORS.white2,
+            borderRadius: SIZES.inputRadius,
+            paddingLeft: SIZES.m,
+            fontSize: 16,
+            fontFamily: "Montserrat-SemiBold",
+            color: COLORS["gray-medium"],
+          },
+        }}
+      />
+    </View>
   );
 };
 
 export default InputDropDown;
 
 const styles = StyleSheet.create({
-  dropdown: {
+  //  container:
+  container: {
     flex: 1,
-    margin: SIZES.xs,
-    height: SIZES.inputHeight,
-    backgroundColor: COLORS.white2,
-    borderRadius: SIZES.inputRadius,
-    paddingHorizontal: SIZES.s,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  item: {
-    padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    width: "auto",
+    margin: SIZES.xs,
   },
-  textItem: {
-    flex: 1,
-    fontSize: 16,
-    fontFamily: "Montserrat-SemiBold",
-  },
-  placeholderStyle: {
-    fontFamily: "Montserrat-SemiBold",
-    fontSize: 16,
-    color: COLORS["gray-medium"],
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-    fontFamily: "Montserrat-SemiBold",
-    color: COLORS["gray-medium"],
-  },
-  iconStyle: {
-    width: 30,
-    height: 30,
+
+  //
+  iconRight: {
+    position: "absolute",
+    top: 18,
+    right: SIZES.s,
+    backgroundColor: COLORS.white2,
   },
 });

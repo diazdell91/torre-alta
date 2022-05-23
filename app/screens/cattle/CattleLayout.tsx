@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, StatusBar } from "react-native";
 import {
   cattleServices,
   GET_CATTLE_BY_ID,
   GET_CATTLE_CHILD_BY_ID,
   GET_VIDEO,
-  SELECT_CATTLE_TREE,
+  GET_CATTLE_TREE,
 } from "../../apis/cattle";
 import TopTabs from "../../components/TopTabs";
 import Error from "../error/Error";
@@ -17,7 +17,7 @@ import CattleVideo from "./CattleVideo";
 
 type Props = any;
 
-const tabs = ["General", "Hijos", "Video"];
+const tabs = ["General", "Hijos", "Árbol", "Video"];
 
 const CattleLayout = ({ navigation, route }: Props) => {
   const id = route.params.id;
@@ -37,27 +37,32 @@ const CattleLayout = ({ navigation, route }: Props) => {
       `${GET_CATTLE_BY_ID}${id}`,
       `${GET_CATTLE_CHILD_BY_ID}${id}`,
       `${GET_VIDEO}${id}`,
-      `${SELECT_CATTLE_TREE}${id}`,
+      `${GET_CATTLE_TREE}${id}`,
     ];
 
     let requestCattleDetail = urls.map((url) => cattleServices.get(url));
 
     Promise.all(requestCattleDetail)
       .then((response) => {
-        console.log(response);
         response.map((res) => {
+          // console.log(res.status);
           if (res.status === 200) {
-            if (res.config.url === `${GET_CATTLE_BY_ID}${id}`) {
-              setCattle(res.data);
-            }
-            if (res.config.url === `${GET_CATTLE_CHILD_BY_ID}${id}`) {
-              setCattleChild(res.data);
-            }
-            if (res.config.url === `${GET_VIDEO}${id}`) {
-              setVideos(res.data);
-            }
-            if (res.config.url === `${SELECT_CATTLE_TREE}${id}`) {
-              setCattleTree(res.data);
+            switch (res.config.url) {
+              case `${GET_CATTLE_BY_ID}${id}`:
+                setCattle(res.data);
+                break;
+              case `${GET_CATTLE_CHILD_BY_ID}${id}`:
+                setCattleChild(res.data);
+                break;
+              case `${GET_CATTLE_TREE}${id}`:
+                setCattleTree(res.data);
+                break;
+              case `${GET_VIDEO}${id}`:
+                setVideos(res.data);
+                break;
+
+              default:
+                break;
             }
           }
         });
@@ -85,6 +90,7 @@ const CattleLayout = ({ navigation, route }: Props) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <TopTabs
         tabs={tabs}
         tabSelected={selectedTab}

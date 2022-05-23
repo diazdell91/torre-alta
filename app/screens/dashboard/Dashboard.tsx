@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import AnimalItem from "./components/AnimalItem";
 import TableHeader from "./components/TableHeader";
@@ -11,6 +11,10 @@ type Props = any;
 const Dashboard = ({ navigation, route }: Props) => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({ title: `Torrealta(0)` });
+  }, []);
 
   useEffect(() => {
     setLoading(true);

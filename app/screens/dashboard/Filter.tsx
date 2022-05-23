@@ -133,17 +133,18 @@ const Filter = ({ navigation }: Props) => {
           placeholder="N°"
           value={values.numero}
           onChangeText={(text: string) => handleChange("numero", text)}
+          keyboardType="numeric"
         />
         <InputDropDown
           placeholder="Ganadería"
-          value={values.ganaderia}
           data={ganaderias}
-          onChange={(item) => handleChange("ganaderia", item.value)}
+          onChange={(value) => handleChange("ganaderia", value)}
         />
         <Input
           placeholder="Guarismo"
           value={values.guarismo}
           onChangeText={(text: string) => handleChange("gaurismo", text)}
+          keyboardType="numeric"
         />
         <Input
           placeholder="Nombre"
@@ -151,37 +152,33 @@ const Filter = ({ navigation }: Props) => {
         />
         <InputDropDown
           placeholder="Sexo"
-          value={values.sexo}
           data={sexos}
-          onChange={(item) => handleChange("sexo", item.value)}
+          onChange={(value) => handleChange("sexo", value)}
         />
         <InputDropDown
           placeholder="Estado"
-          value={values.estado}
           data={estados}
-          onChange={(item) => handleChange("estado", item.value)}
+          onChange={(value) => handleChange("estado", value)}
         />
         <InputDropDown
           placeholder="Pelo"
-          value={values.pelo}
           data={pelos}
-          onChange={(item) => handleChange("pelo", item.value)}
+          onChange={(value) => handleChange("pelo", value)}
         />
         <InputDropDown
           placeholder="Plaza"
-          value={values.plaza}
           data={plazas}
-          onChange={(item) => handleChange("plaza", item.value)}
+          onChange={(value) => handleChange("plaza", value)}
         />
         <InputDropDown
           placeholder="Destino"
-          value={values.destino}
           data={destinos}
-          onChange={(item) => handleChange("destino", item.value)}
+          onChange={(value) => handleChange("destino", value)}
         />
         <Input
           placeholder="Crotal"
           onChangeText={(text: string) => handleChange("crotal", text)}
+          keyboardType="numeric"
         />
         <Input
           placeholder="Madre o número"
@@ -205,9 +202,6 @@ const Filter = ({ navigation }: Props) => {
           <Text>{data.length} animales encontrados</Text>
         </Pressable>
       )}
-      {/* <View style={styles.infoContainer}>
-        <Text>328 animales encontrados</Text>
-      </View> */}
       <Button title="Aplicar" onPress={handleSubmit} />
     </View>
   );

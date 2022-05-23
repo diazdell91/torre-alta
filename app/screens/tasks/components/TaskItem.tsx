@@ -6,8 +6,7 @@ import {
   Pressable,
   PressableProps,
 } from "react-native";
-import { endTask, pauseTask, startTask } from "../../../apis/task";
-import { Text } from "../../../components";
+import { ActivityIndicatorModal, Text } from "../../../components";
 import { COLORS, SIZES } from "../../../theme/Theme";
 
 type TaskProps = {
@@ -21,72 +20,20 @@ type TaskProps = {
 type Props = {
   task: TaskProps;
   onPressInfo: PressableProps["onPress"];
+  handleStart: (id: string, title: string) => void;
+  handleFinish: (id: string) => void;
+  handlePause: (id: string) => void;
 };
 
 const TaskItem = (props: Props) => {
-  const { task, onPressInfo } = props;
-  const [isLoading, setIsLoading] = useState(false);
+  const { task, onPressInfo, handleStart, handlePause, handleFinish } = props;
+  const [loading, setLoadig] = useState(false);
   const [error, setError] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
   let active = task.estado === "En progreso" ? true : false;
 
   const borderColor = active ? COLORS.secundary : COLORS.white2;
-
-  const handleStart = async () => {
-    setIsLoading(true);
-    console.log("start task", task.nid);
-    const resp = await startTask({
-      id: task.nid,
-      nombre_tiempo: task.titulo,
-    });
-    if (resp.data) {
-      console.log(resp.data);
-      setIsLoading(false);
-    }
-    if (resp.error) {
-      console.log(resp.error);
-      setIsLoading(false);
-      setIsVisible(true);
-      setError("Error al comenazar esta tarea");
-    }
-  };
-
-  const handleFinish = async () => {
-    setIsLoading(true);
-    console.log("end task", task.nid);
-    const resp = await endTask({
-      id: task.nid,
-    });
-    if (resp.data) {
-      console.log(resp.data);
-      setIsLoading(false);
-    }
-    if (resp.error) {
-      console.log(resp.error);
-      setIsLoading(false);
-      setIsVisible(true);
-      setError("Error al pausar esta tarea");
-    }
-  };
-
-  const handlePause = async () => {
-    setIsLoading(true);
-    console.log("pause task", task.nid);
-    const resp = await pauseTask({
-      id: task.nid,
-    });
-    if (resp.data) {
-      console.log(resp.data);
-      setIsLoading(false);
-    }
-    if (resp.error) {
-      console.log(resp.error);
-      setIsLoading(false);
-      setIsVisible(true);
-      setError("Error al pausar esta tarea");
-    }
-  };
 
   return (
     <View style={{ ...styles.container, borderColor }}>
@@ -99,13 +46,13 @@ const TaskItem = (props: Props) => {
       <View style={{ flexDirection: "row" }}>
         {active ? (
           <>
-            <Pressable onPress={handlePause}>
+            <Pressable onPress={() => handlePause(task.nid)}>
               <Image
                 source={require("../../../../assets/icons/pausa.png")}
                 style={styles.icon}
               />
             </Pressable>
-            <Pressable onPress={handleFinish}>
+            <Pressable onPress={() => handleFinish(task.nid)}>
               <Image
                 source={require("../../../../assets/icons/check.png")}
                 style={styles.icon}
@@ -113,7 +60,7 @@ const TaskItem = (props: Props) => {
             </Pressable>
           </>
         ) : (
-          <Pressable onPress={handleStart}>
+          <Pressable onPress={() => handleStart(task.nid, task.titulo)}>
             <Image
               source={require("../../../../assets/icons/play.png")}
               style={styles.icon}
@@ -121,6 +68,7 @@ const TaskItem = (props: Props) => {
           </Pressable>
         )}
       </View>
+      <ActivityIndicatorModal loading={loading} />
     </View>
   );
 };

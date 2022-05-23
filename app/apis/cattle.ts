@@ -20,7 +20,7 @@ const cattleServices = axios.create({
 const GET_CATTLE_LIST = `animales/listado`;
 const GET_CATTLE_BY_ID = `animal/detalle/`;
 const GET_CATTLE_CHILD_BY_ID = `animal/hijos/`;
-const SELECT_CATTLE_TREE = `animal/arbol/`;
+const GET_CATTLE_TREE = `animal/arbol/`;
 const GET_VIDEO = `video/filter?ID=`;
 const SELECT_HAIR = `pelo/select`;
 const SELECT_SEX = `sexo/select`;
@@ -84,7 +84,7 @@ export {
   GET_CATTLE_LIST,
   GET_CATTLE_BY_ID,
   GET_CATTLE_CHILD_BY_ID,
-  SELECT_CATTLE_TREE,
+  GET_CATTLE_TREE,
   GET_VIDEO,
   SELECT_HAIR,
   SELECT_SEX,

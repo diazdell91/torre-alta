@@ -20,9 +20,8 @@ const useAuthActions = (initialAuth = INITIAL_STATE) => {
       //Getting session from localStorage
       const user = await getUser();
       const valid = user && user.uid;
-      if (valid) {
-        dispatch({ type: "RESTORE_TOKEN", payload: user });
-      }
+      if (!valid) signOut();
+      dispatch({ type: "RESTORE_TOKEN", payload: user });
     };
     bootstrapAsync();
   }, []);

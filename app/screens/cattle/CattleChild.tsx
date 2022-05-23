@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import Error from "../error/Error";
 import CattleChildHeader from "./components/CattleChildHeader";
 import CattleChildItem from "./components/CattleChildItem";
 import TagChild from "./components/TagChild";
@@ -21,7 +22,7 @@ const CattleChild = ({ data }: Props) => {
       </View>
     );
   }
-  return null;
+  return <Error message="No hay informacción que mostrar" />;
 };
 
 export default CattleChild;

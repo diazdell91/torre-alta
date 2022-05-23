@@ -31,10 +31,11 @@ const taskServices = axios.create({
 });
 
 const GET_TASK_TYPE = `tipotarea/filter`;
+const GET_USER = `user/filter?username=admin`;
 const GET_TASK_GENERAL = `tarea/listadogenerales?username=`;
 const GET_TASK_TODAY = `tarea/listadohoy?username=`;
 const GET_TASK_PENDING = `tarea/listadosinterminar?username=`;
-const GET_TASK_DESCRIPTION = `tarea/descripcion`;
+const GET_TASK_DESCRIPTION = `tarea/descripcion?id=`;
 
 const addTask = async (newTask: addTaskParams) => {
   const url = `${BASE_URL}tarea/add`;
@@ -98,6 +99,7 @@ export {
   startTask,
   pauseTask,
   endTask,
+  GET_USER,
   GET_TASK_GENERAL,
   GET_TASK_TYPE,
   GET_TASK_TODAY,

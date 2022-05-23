@@ -13,11 +13,10 @@ type Props = {
 };
 
 const CattleGeneral = ({ data }: Props) => {
-  console.log(data);
   const animal = data[0];
   const caballo = animal?.caballo;
   const muleta = animal?.muleta;
-  const details = animal?.details;
+  const details = animal?.detalles;
   const observations = animal?.observations;
   const media = {
     media_caballo: animal?.media_caballo,
